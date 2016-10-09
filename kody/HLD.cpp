@@ -1,38 +1,67 @@
 #include <bits/stdc++.h>
 #define pb push_back
-#define ft first
-#define sd second
-#define inf 1000000000
+#define inf 2000000005
+#define ll long long
+
 using namespace std;
 
-vector < vector < int > > V(100005);
-vector < vector < int > > Baby(100005);
-int mod[100005];
+struct drz_prz
+{
+	vector < int > V;
+	int pot;
+	drz_prz(int n)
+	{
+		pot = 2;
+		while(pot < n)
+			pot *= 2;
+		V.resize(2*pot, 0);
+	}
+	void dodaj(int gdzie, int war)
+	{
+		gdzie += pot;
+		V[gdzie] += war;
+		while(gdzie > 1)
+		{
+			gdzie /= 2;
+			V[gdzie] = max(V[gdzie*2], V[gdzie*2+1]);
+		}
+	}
+	int maxi(int pocz, int kon)
+	{
+		pocz += pot; kon += pot;
+		int wyn = max(V[pocz], V[kon]);
+		while(kon - pocz > 1)
+		{
+			if (pocz%2 == 0)
+				wyn = max(wyn, V[pocz+1]);
+			if (kon%2 == 1)
+				wyn = max(wyn, V[kon-1]);
+			pocz/=2; kon/=2;
+		}
+		return wyn;
+	}
+};
 
 struct Sciezka
 {
 	vector < int > V;
-	vector < pair <int, int> > War;
+	drz_prz* drzewo;
 	void inicjuj()
 	{
-		War.resize(V.size(), {0, 0}); 
-		for(int i=0; i<(int)V.size(); i++)
-			War[i].sd = V[i];
+		drzewo = new drz_prz(V.size());
 	}
-	void dodaj_wierzch(int v){V.pb(v);}
-	//
+	void dodaj_wierzch(int v)
+	{
+		V.pb(v);
+	}
 	void dodaj(int ind_pocz, int ind_kon, int war)
 	{
-		assert(ind_pocz <= ind_kon);
-		for(int i = ind_pocz; i<=ind_kon; i++)
-			War[i].ft += war;
+		assert(ind_pocz == ind_kon); //bo dla != nie testowalem
+		drzewo->dodaj(ind_pocz, war);
 	}
-	pair < int, int> mini(int pocz, int kon)
+	int maxi(int pocz, int kon)
 	{
-		pair < int, int > wyn = {inf, 0};
-		for(int i=pocz; i<=kon; i++)
-			wyn = min(wyn, War[i]);
-		return wyn;
+		return drzewo->maxi(pocz, kon);
 	}
 };
 
@@ -44,13 +73,15 @@ struct Info
 	int ojciec;
 };
 
+
+//wierzcholki numerujemy od 1
 struct HLD
 {
 	vector < vector < int > >& V;
 	vector < Sciezka > S;
 	vector < Info > I;
 	vector < int > Odw;//do dfs
-	HLD(vector < vector < int > >& V, int korzen) : V(V), I(V.size()+1), Odw(V.size()+1, 0)
+	HLD(vector < vector < int > >& V, int korzen) : V(V), I(V.size()), Odw(V.size(), 0)
 	{
 		dfs_1(korzen, korzen);
 		dfs_2(korzen, -1);
@@ -90,17 +121,13 @@ struct HLD
 				dfs_2(el, -1);
 		}
 	}
-	pair < int, int > mini(int pocz, int kon)
+	int maxi(int pocz, int kon)
 	{
 		int nr = I[pocz].nr_sciezki;
 		if (nr == I[kon].nr_sciezki)
-		{
-			pair < int, int > p = S[nr].mini(I[kon].nr_na_sciezce, I[pocz].nr_na_sciezce);
-			p.sd += mod[S[nr].V[0]];
-			return p;
-		}
-		pair < int, int > p1 = S[nr].mini(0, I[pocz].nr_na_sciezce), p2 = mini(I[S[nr].V[0]].ojciec, kon);
-		return min(p1, p2);
+			return S[nr].maxi(I[kon].nr_na_sciezce, I[pocz].nr_na_sciezce);
+		int m1 = S[nr].maxi(0, I[pocz].nr_na_sciezce), m2 = maxi(I[S[nr].V[0]].ojciec, kon);
+		return max(m1, m2);
 	}
 	void dodaj(int pocz, int kon, int war)//UWAGA: kon to ma byc przodek pocz. Moze potrzebujesz LCA?
 	{
@@ -116,72 +143,60 @@ struct HLD
 	}
 };
 
+//wierzcholki numerujemy od 1
 struct LCA
 {
-	int** ANC;
-	int* wys;
-	int n, korzen, logn;
-	vector < vector < int > > V;
-	LCA(int n, int korzen, vector < vector < int > > &V) : n(n), korzen(korzen), V(V)
+	vector < vector < int > >&V;
+	vector < int > cz, pw, pom;
+	int n, k, czas, pot;
+	LCA(int n, int korzen, vector < vector < int > >&V) : n(n), k(korzen), V(V), cz(n+1), pw(n+1, 0), czas(0)
 	{
-		V.resize(n+1);
-		ANC = new int*[n+1];
-		wys = new int[n+1];
-		logn = 34 -__builtin_clz(n);
-		for(int i=0; i<=n; i++)
-				ANC[i] = new int[logn];
-		oblicz_ANC();
+		pot = 1;
+		while(pot < 2*n+2) pot *= 2;
+		pom.reserve(2*pot);
+		pom.resize(pot+1);
+		dfs(k);
+		for(int i = pot-1; i>0; i--)
+			pom[i] = min(pom[2*i], pom[2*i+1]);
+		
 	}
-	void oblicz_ANC()
+	void dfs(int v)
 	{
-		dfs(korzen, korzen);
-		wys[korzen]=-1;
-		for(int i=1; i<logn; i++)
-			for(int j=0; j<=n; j++)
-				ANC[j][i] = ANC[ ANC[j][i-1] ][i-1];
+		int t = ++czas;
+		cz[t] = v;
+		pw[v] = pom.size();
+		pom.pb(czas);
+		for(int i=0; i<V[v].size(); i++)
+			if (!pw[ V[v][i] ])
+			{
+				dfs( V[v][i] );
+				pom.pb(t);
+			}
 	}
-	void dfs(int v, int ojciec)
+	int znajdz(int v, int u)
 	{
-		wys[v] = 1 + wys[ojciec];
-		ANC[v][0] = ojciec;
-		for(auto sas : V[v])
-			if (sas != ojciec)
-				dfs(sas, v);
-	}
-	int znajdz(int v, int w)
-	{
-		if (wys[v] > wys[w]) 
-			swap(v, w);
-		for(int i = logn-1; i>=0; i--)
-			if (wys[w] - (1<<i) >= wys[v])
-				w = ANC[w][i];
-		for(int i = logn-1; i>=0; i--)
-			if (ANC[w][i] != ANC[v][i])
-				w = ANC[w][i], v = ANC[v][i];
-		return w == v ? w : ANC[w][0];
+		v = pw[v];
+		u = pw[u];
+		if (v > u)
+			swap(v, u);
+		int mini = min(pom[v], pom[u]);
+		while(u - v > 1)
+		{
+			if (v%2 == 0)
+				mini = min(mini, pom[v+1]);
+			if (u%2 == 1)
+				mini = min(mini, pom[u-1]);
+			u/=2; v/=2;
+		}
+		return cz[mini];
 	}
 };
 
-int pre[100005], post[100005];
-
-int nr = 1;
-void dfs(int v)
-{
-	if (pre[v])
-		return;
-	pre[v] = nr++;
-	for(auto& el : V[v])
-	{
-		dfs(el);
-	}
-	post[v] = nr;
-}
-
-
 int main()
 {
-	int n, m, q;
-	cin>>n>>m>>q;
+	int n;
+	cin>>n;
+	vector < vector < int > > V(n+1);
 	for(int i=0; i<n-1; i++)
 	{
 		int a, b;
@@ -189,78 +204,23 @@ int main()
 		V[a].pb(b);
 		V[b].pb(a);
 	}
-	dfs(1);
-	HLD hld(V, 1);
 	LCA lca(n, 1, V);
-	for(int i=0; i<m; i++)
-	{
-		int a;
-		cin>>a;
-		Baby[a].pb(i);
-	}
-	for(int i=1; i<=n; i++)
-	{
-		reverse(Baby[i].begin(), Baby[i].end());
-		if (!Baby[i].size())
-			hld.dodaj(i, i, inf);
-		else
-			hld.dodaj(i, i, Baby[i].back());
-	}
+	HLD hld(V, 1);
 	
-	
+	int q;
+	cin>>q;
 	while(q--)
 	{
-		int t;
-		cin>>t;
-		if (t == 1)
-		{
-			int v, u, k, pom;
-			cin>>v>>u>>k;
-			pom = lca.znajdz(v, u);
-			vector < int > odp;
-			while(k--)
-			{
-				auto p = min(hld.mini(v, pom), hld.mini(u, pom));
-				int ans =  Baby[p.sd].back() + 1;
-				if (ans < inf)
-					odp.pb(ans);
-				if (Baby[p.sd].size() == 1)
-				{
-					hld.dodaj(p.sd, p.sd, inf);
-				}
-				else
-				{
-					int size = Baby[p.sd].size();
-					hld.dodaj(p.sd, p.sd, Baby[p.sd][size-2] - Baby[p.sd][size-1]);
-				}
-				Baby[p.sd].pop_back();
-			}
-			cout << odp.size() << " " ;
-			for(auto el : odp)
-				cout << el << " ";
-			cout << "\n";
-		}
+		char c;
+		int a, b;
+		cin>>c>>a>>b;
+		if (c == 'I')
+			hld.dodaj(a, a, b);
 		else
 		{
-			int v, k;
-			cin>>v>>k;
-			for(int i=pre[v]; i<=post[v]; i++)
-				mod[i]+=k;
-			int ojciec = hld.I[v].ojciec, sc1 = hld.I[v].nr_sciezki, sc2 = hld.I[ojciec].nr_sciezki;
-			if (v != 1 && sc1 == sc2)
-			{
-				hld.S[sc1].dodaj(hld.I[v].nr_na_sciezce, hld.S[sc1].V.size()-1, k);
-			}
+			int anc = lca.znajdz(a, b);
+			int m1 = hld.maxi(a, anc), m2 = hld.maxi(b, anc);
+			cout << max(m1, m2) << "\n";
 		}
-		
 	}
 }
-/*
-5 7 11
-3 5
-2 3
-4 3
-1 4
-4 1 4 5 4 1 4
-1 2 1 2
-*/
