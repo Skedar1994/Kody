@@ -13,49 +13,52 @@ const int IINF = 2e9 + 1;
 const int limit = 1048576;
 using namespace std;
 
+//wierzcholki numerujemy od 1
 struct LCA
 {
-	int** ANC;
-	int* wys;
-	int n, korzen, logn;
-	vector < vector < int > > V;
-	LCA(int n, int korzen, vector < vector < int > > &V) : n(n), korzen(korzen), V(V)
+	vector < vector < int > >&V;
+	vector < int > cz, pw, pom;
+	int n, k, czas, pot;
+	LCA(int n, int korzen, vector < vector < int > >&V) : n(n), k(korzen), V(V), cz(n+1), pw(n+1, 0), czas(0)
 	{
-		V.resize(n+1);
-		ANC = new int*[n+1];
-		wys = new int[n+1];
-		logn = 34 -__builtin_clz(n);
-		for(int i=0; i<=n; i++)
-				ANC[i] = new int[logn];
-		oblicz_ANC();
+		pot = 1;
+		while(pot < 2*n+2) pot *= 2;
+		pom.reserve(2*pot);
+		pom.resize(pot+1);
+		dfs(k);
+		for(int i = pot-1; i>0; i--)
+			pom[i] = min(pom[2*i], pom[2*i+1]);
+		
 	}
-	void oblicz_ANC()
+	void dfs(int v)
 	{
-		wys[korzen]=-1;
-		dfs(korzen, korzen);
-		for(int i=1; i<logn; i++)
-			for(int j=1; j<=n; j++)
-				ANC[j][i] = ANC[ ANC[j][i-1] ][i-1];
+		int t = ++czas;
+		cz[t] = v;
+		pw[v] = pom.size();
+		pom.pb(czas);
+		for(int i=0; i<V[v].size(); i++)
+			if (!pw[ V[v][i] ])
+			{
+				dfs( V[v][i] );
+				pom.pb(t);
+			}
 	}
-	void dfs(int v, int ojciec)
+	int znajdz(int v, int u)
 	{
-		wys[v] = 1 + wys[ojciec];
-		ANC[v][0] = ojciec;
-		for(auto sas : V[v])
-			if (sas != ojciec)
-				dfs(sas, v);
-	}
-	int znajdz(int v, int w)
-	{
-		if (wys[v] > wys[w]) 
-			swap(v, w);
-		for(int i = logn-1; i>=0; i--)
-			if (wys[w] - (1<<i) >= wys[v])
-				w = ANC[w][i];
-		for(int i = logn-1; i>=0; i--)
-			if (ANC[w][i] != ANC[v][i])
-				w = ANC[w][i], v = ANC[v][i];
-		return w == v ? w : ANC[w][0];
+		v = pw[v];
+		u = pw[u];
+		if (v > u)
+			swap(v, u);
+		int mini = min(pom[v], pom[u]);
+		while(u - v > 1)
+		{
+			if (v%2 == 0)
+				mini = min(mini, pom[v+1]);
+			if (u%2 == 1)
+				mini = min(mini, pom[u-1]);
+			u/=2; v/=2;
+		}
+		return cz[mini];
 	}
 };
 
