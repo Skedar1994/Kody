@@ -1,6 +1,6 @@
 struct Centroids {
     
-    int n;
+    int n; // indeksowanie od 1
     vector<vector<int>>& v;
     
     vector<int> parent;
