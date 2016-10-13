@@ -2,20 +2,20 @@ Kody do napisania:
 
 KMR
 KMP
-dwuspójne 
-eliminacja Gauss-a
-hungarian
 
-simpleks
-drzewa palindromiczne (ponoc w Krakowie na cercu bylo zadanie na to, tak Kostka mowi)
+simpleks - olać
 
 
 
 Radek:
 splay (https://www.solve.edu.pl/tasks/view/214)
+drzewa palindromiczne (ponoc w Krakowie na cercu bylo zadanie na to, tak Kostka mowi)
+(link do drzew: http://adilet.org/blog/25-09-14/)
 
 Jacek:
 geometria
+eliminacja Gauss-a
 
 Piotrek:
-rozbicie na centroidy (Radek: poszukam na to zadania z IOI-a pozniej)
+rozbicie na centroidy (Radek: chyba zadanie Race z tego: http://www.ioi2011.or.th/tasks)
+hungarian
