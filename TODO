@@ -1,21 +1,19 @@
 Kody do napisania:
 
-rozbicie na centroidy
 KMR
 KMP
-dwuspójne
-eliminacja Gauss-a
-hungarian
-splay
-simpleks
-geometria
+Euler (byc moze wystarczy tylko przetestowac)
+simpleks - olać
 
 Radek:
-ogarnać troszkę swoje kody
-2SAT
+splay (https://www.solve.edu.pl/tasks/view/214)
+drzewa palindromiczne (ponoc w Krakowie na cercu bylo zadanie na to, tak Kostka mowi)
+(link do drzew: http://adilet.org/blog/25-09-14/)
 
 Jacek:
 geometria
+eliminacja Gauss-a
 
 Piotrek:
-
+rozbicie na centroidy (Radek: chyba zadanie Race z tego: http://www.ioi2011.or.th/tasks)
+hungarian

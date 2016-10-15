@@ -1,25 +1,26 @@
 #include<bits/stdc++.h>
-#define rep(i,k,n) for(int i= (int) k;i< (int) n;i++)
+#define rep(i,k,n) for(ll i= (ll) k;i< (ll) n;i++)
 #define all(v) (v).begin(), (v).end()
+#define SZ(v) (int)((v).size())
 #define pb push_back
 #define ft first
 #define sd second
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double ld;
-typedef unsigned int uint;
 const long long INF = 4e18L + 1;
 const int IINF = 2e9 + 1;
 const int limit = 1048576;
+
 using namespace std;
 
 //wierzcholki numerujemy od 1
 struct LCA
 {
+	int n, k, czas, pot;
 	vector < vector < int > >&V;
 	vector < int > cz, pw, pom;
-	int n, k, czas, pot;
-	LCA(int n, int korzen, vector < vector < int > >&V) : n(n), k(korzen), V(V), cz(n+1), pw(n+1, 0), czas(0)
+	LCA(int n, int korzen, vector < vector < int > >&V) : n(n), k(korzen), czas(0), V(V), cz(n+1), pw(n+1, 0)
 	{
 		pot = 1;
 		while(pot < 2*n+2) pot *= 2;
@@ -36,7 +37,7 @@ struct LCA
 		cz[t] = v;
 		pw[v] = pom.size();
 		pom.pb(czas);
-		for(int i=0; i<V[v].size(); i++)
+		for(int i=0; i<SZ(V[v]); i++)
 			if (!pw[ V[v][i] ])
 			{
 				dfs( V[v][i] );
