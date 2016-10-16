@@ -17,7 +17,7 @@ struct drzewoprzedzialowe //max->min wystarczy zrobic define max min
 	{
 		pot = 1; while(pot <= rozmiar) pot <<= 1;
 		drzewo = new wezel[2*pot];
-		memset(drzewo, 0, 2*rozmiar*(sizeof (wezel))); 
+		memset(drzewo, 0, 2*pot*(sizeof (wezel))); 
 	}
 	~drzewoprzedzialowe(){delete[] drzewo;}
 	void dodaj(int p, int k, int war)
