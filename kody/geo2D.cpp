@@ -6,7 +6,7 @@ typedef complex<R> C;
 
 static bool whatever;
 
-const R eps = 1e-10;
+const R eps = 1e-8;
 
 bool eq(R r1, R r2) { return fabs(r1 - r2) < eps; }
 
