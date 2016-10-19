@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define LT 1						//dla liczb powyzej miliona powinno wystarczyc 1
+#define LT 2						//dla liczb powyzej miliona powinno wystarczyc 1
 typedef unsigned long long ull;
 typedef long long ll;
 typedef unsigned int uint;
@@ -29,7 +29,11 @@ ull pot(ull x, ull wyk, ull MOD)
 		return mnozenie(x, pot(mnozenie(x, x, MOD), wyk/2, MOD), MOD);
 	return pot(mnozenie(x, x, MOD), wyk/2, MOD);
 }
- 
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//UWAGA LT = 1 to czasem za mało, zbyt małe LT może być powodem WA !!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 bool TestMR(ull liczba) //dla malych liczb sito? 0 gdy zlozona
 {
     bool czy;
@@ -142,7 +146,7 @@ vector < pair <ull,int> > rozloz(ll M)
 	return Odp;
 }
 
-void sito_eratostenesa()//uzyc na poczatku
+void sito_eratostenesa()//uzyc na poczatku maina
 {
 	for(int i=2; i<=mala; i++)
 		sito[i] = i;
