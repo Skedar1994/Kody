@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 #define LT 1						//dla liczb powyzej miliona powinno wystarczyc 1
 typedef unsigned long long ull;
+typedef long long ll;
+typedef unsigned int uint;
 using namespace std;
 
 ull DOTESTU[6] = {61, 2, 3, 5, 7, 11};
@@ -102,9 +104,57 @@ ull RHOPollard(ull K)
 	return RHOPollard(K);
 }
 
+
+#define mala 100000
+ll sito[mala+1];
+
+vector < pair <ull,int> > rozloz(ll M)
+{
+	vector < ll > V = {M};
+	vector < pair < ull, int > > Odp;
+	while(V.size())
+	{
+		ll pom = V.back(), dz;
+		V.pop_back();
+		if (pom == 1)
+			continue;
+		if (pom > mala)
+			dz = RHOPollard(pom);
+		else
+			dz = sito[pom];
+		if (dz == pom)
+		{
+			int ile = 1;
+			for(auto& el : V)
+				while(el % dz==0)
+				{
+					ile++;
+					el /= dz;
+				}
+			Odp.push_back({dz, ile});
+		}
+		else
+		{
+			V.push_back(max(dz, pom/dz));
+			V.push_back(min(dz, pom/dz));
+		}
+	}
+	return Odp;
+}
+
+void sito_eratostenesa()//uzyc na poczatku
+{
+	for(int i=2; i<=mala; i++)
+		sito[i] = i;
+	for(int i=2; i*i<=mala; i++)
+		if (sito[i] == i)
+			for(int j = 2*i; j<=mala; j+=i)
+				sito[j] = i;
+}
+
 int main()
 {
-
+	sito_eratostenesa();
 }
 /*
 if n < 2,047, it is enough to test a = 2;
