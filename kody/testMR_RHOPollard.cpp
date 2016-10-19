@@ -74,36 +74,31 @@ ull F(ull x, ull M)
 
 ull RHOPollard(ull K)
 {
-    ull ile=0, akt=1, next;
-	ull D=1;
 	ull pom = rand()%K;
-	if (pom == 0 ) 
+	if (pom == 0)
 		pom++;
-	if (TestMR(K))	//TestMR moze slabo dzialac dla K<10000
+	if (TestMR(K))
 		return K;
-	ull x=F(F(pom, K), K), y=F(pom, K);
-	while(x!=y)
+	ull potega = 4;
+	vector < ull > V(potega);
+	V[0] = pom;
+	for(uint i=1; i<potega; i++)
+		V[i] = F(V[i-1], K);
+	bool koncz = false;
+	while(!koncz)
 	{
-        ile++;
-        next = mnozenie(akt, abs(x-y), K);
-       if (next==0) 
-            ile=100;
-        else
-            akt=next;
-        if (ile==100)
-        {
-            ile = 0;
-		    D=__gcd( K, akt );
-		    if (D>1)
-			    return D;
-			akt=1;
-        }
-		x=F(F(x, K), K);
-		y=F(y, K);
+		for(uint i=0; i<potega-1; i++)
+		{
+			koncz |= (V.back() == V[i]);
+			ull pom = __gcd( max(V[i], V.back()) - min(V[i], V.back()), K);
+			if (pom > 1 && pom < K)
+				return pom;
+		}
+		V.resize(2*potega);
+		for(uint i = potega; i<2*potega; i++)
+			V[i] = F(V[i-1], K);
+		potega *= 2;
 	}
-	D=__gcd( K, akt );
-	if (D>1)
-		return D;
 	return RHOPollard(K);
 }
 
