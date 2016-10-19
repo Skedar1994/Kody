@@ -1,16 +1,19 @@
 typedef long double R;
 typedef complex<R> C;
 
+#define x real()
+#define y imag()
+
 static bool whatever;
 
 const R eps = 1e-10;
 
 bool eq(R r1, R r2) { return fabs(r1 - r2) < eps; }
 
-bool eq(C c1, C c2) { return eq(c1.real(), c2.real()) and eq(c1.imag(), c2.imag()); }
+bool eq(C c1, C c2) { return eq(c1.x, c2.x) and eq(c1.y, c2.y); }
 
-R dot(C c1, C c2) { return c1.real() * c2.real() + c1.imag() * c2.imag();}
-R det(C c1, C c2) { return c1.real() * c2.imag() - c1.imag() * c2.real();}
+R dot(C c1, C c2) { return c1.x * c2.x + c1.y * c2.y;}
+R det(C c1, C c2) { return c1.x * c2.y - c1.y * c2.x;}
 
 struct line{
 	C n;
