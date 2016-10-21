@@ -73,11 +73,21 @@ struct Dinic
 		}
 		return maxflow;
 	}
-	void add_edge(int from, int to, ll capacity)
+	void add_edge(int from, int to, ll capacity, ll cap2 = 0)
 	{
 		nei[from].pb(to);
 		nei[to].pb(from);
-		cap[from][to] = capacity;
+		cap[from][to] += capacity;
+		cap[to][from] += cap2;
+	}
+	vector < int > find_source_cc()
+	{
+		bfs();
+		vector < int > ans;
+		for(int i=0; i<=n; i++)
+			if (d[i] != -1)
+				ans.pb(i);
+		return ans;
 	}
 };
 int main()
