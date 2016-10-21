@@ -1,4 +1,5 @@
 //znaleziona w kodach UJ na CF-ie
+//dziala dla ujemnych
 
 #include <bits/stdc++.h>
 
