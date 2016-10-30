@@ -1,0 +1,105 @@
+#include<bits/stdc++.h>
+#define rep(i,k,n) for(ll i= (ll) k;i< (ll) n;i++)
+#define all(v) (v).begin(), (v).end()
+#define SZ(v) (int)((v).size())
+#define pb push_back
+#define ft first
+#define sd second
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double ld;
+const long long INF = 4e18L + 1;
+const int IINF = 2e9 + 1;
+const int limit = 1048576;
+
+using namespace std;
+
+#define LOCAL
+#ifndef LOCAL
+#define cerr if(0)cout
+#define endl "\n"
+#endif
+
+struct Dinic
+{
+	struct Edge{
+		int v;
+		ll cap;
+		int rev_ind;
+		Edge(int to, ll capa, int ind) : v(to), cap(capa), rev_ind(ind) {}
+	};
+	int n, source, sink;
+	vector < int > starte, d;
+	vector < vector<Edge> > nei;
+
+	inline bool bfs()
+	{
+		d = vector<int>(n + 1, -1);
+		d[source] = 0;
+		vector<int> q(1,source);
+		rep(i, 0, q.size())
+		{
+			int v = q[i];
+			for(auto w: nei[v])
+				if(d[w.v] == -1 && w.cap)
+				{
+					q.pb(w.v);
+					d[w.v] = d[v] + 1;
+				}
+		}
+		return d[sink] != -1;
+	}
+	ll dfs(int v, ll mincap)
+	{
+		if (!mincap || v == sink) return mincap;
+		ll fp=0;
+		rep(i, starte[v], nei[v].size())
+		{
+			if(!mincap)
+				break;
+			else
+				starte[v]=i;
+			Edge& edge = nei[v][i];
+			int w = nei[v][i].v;
+			if(d[w] == d[v] + 1)
+			{
+				ll f = dfs(w, min(mincap, edge.cap));
+				mincap -= f;
+				fp += f;
+				edge.cap -= f;
+				nei[edge.v][edge.rev_ind].cap += f;
+				
+			} 
+		}
+		return fp;
+	}
+	Dinic(int n, int source, int sink) : n(n), source(source), sink(sink), nei(n+1) 
+	{	
+	}
+	ll flow()
+	{
+		ll maxflow = 0;
+		while(bfs())
+		{
+			starte = vector<int>(n + 1, 0);
+			maxflow += dfs(source, INF);
+		}
+		return maxflow;
+	}
+	void add_edge(int from, int to, ll capacity, ll cap2 = 0)
+	{
+		Edge e1(to, capacity, SZ(nei[to])), e2(from, cap2, SZ(nei[from]));
+		nei[from].pb(e1);
+		nei[to].pb(e2);
+	
+	}
+	vector < int > find_source_cc()
+	{
+		bfs();
+		vector < int > ans;
+		for(int i=0; i<=n; i++)
+			if (d[i] != -1)
+				ans.pb(i);
+		return ans;
+	}
+};
