@@ -7,7 +7,7 @@ using namespace std;
 //potem dodajemy krawedzie funkcja add
 //na koniec wywolujemy solve()
 //odpowiedz jest w zmiennych flow, cost
-//numeracja od 0
+//numeracja od 0 (zeby byla od 1 trzeba dac liczbe wierzcholkow o jeden za duza)
 //dziala z ujemnymi
 namespace mincost {
 	const int V=510,E=51000,inf=0x20202020;
