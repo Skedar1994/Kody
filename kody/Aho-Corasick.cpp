@@ -13,11 +13,6 @@ const int IINF = 2e9 + 1;
 const int limit = 1048576;
 using namespace std;
 
-// checklist
-// long longi
-// treść źle przeczytana
-// przypadki brzegowe(min max wejście)
-
 struct AhoCorasick{
     static const int CHARSET = 26;
     
