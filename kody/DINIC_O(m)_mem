@@ -1,3 +1,6 @@
+//Zlozonosc : V^2E
+//Czesto lepsza:
+//Jesli ktoras warstwa ma przepustowosc jednostkowa, to zlozonosc to Esqrt(E) (Karzanov)
 #include<bits/stdc++.h>
 #define rep(i,k,n) for(ll i= (ll) k;i< (ll) n;i++)
 #define all(v) (v).begin(), (v).end()
