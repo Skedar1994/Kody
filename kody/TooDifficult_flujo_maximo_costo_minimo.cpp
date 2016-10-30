@@ -3,8 +3,14 @@
 
 using namespace std;
 
+//na poczatku uzywamy funkcji init - zrodlo, ujscie, liczba wierzcholkow
+//potem dodajemy krawedzie funkcja add
+//na koniec wywolujemy solve()
+//odpowiedz jest w zmiennych flow, cost
+//numeracja od 0
+//dziala z ujemnymi
 namespace mincost {
-	const int V=210,E=40000,inf=0x20202020,_inf=0x20;
+	const int V=510,E=51000,inf=0x20202020;
 	int dis[V],q[V*300],vis[V],fst[V],pre[V],nxt[E],y[E],f[E],c[E],S,T,flow,cost,tot,tn;
 	void init(int s,int t,int Tn) {
 		tot=1; tn=Tn;
