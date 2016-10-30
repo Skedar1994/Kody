@@ -1,0 +1,9 @@
+
+//BITSET
+  bitset < 10 > B;
+	B[3] = 1;
+	B[7] = 1;
+	
+	cout << B._Find_first(); //znajduje indeks pierwszego zapalonego bitu 
+	cout << B._Find_next(8); //znajduje indeks pierwszego zapalonego bitu wiekszy niz 8
+  //jesli nie znajdzie, to zwroci rozmiar bitsetu(10)
