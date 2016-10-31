@@ -19,7 +19,7 @@ make $BRUTE;
 for i in `seq 1 $2`;
 do
     # echo $i
-    ./$GEN > $IN;
+    ./$GEN $i > $IN;
     ./$PROG < $IN > $OUT;
     ./$BRUTE < $IN > $BOUT;
     if ! diff $BOUT $OUT;
