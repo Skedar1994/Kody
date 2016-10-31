@@ -2,7 +2,7 @@
 #Na wejściu podajemy nazwę pliku i liczbę testów, które chcemy wykonać.
 #Program kończy działanie jeśli wykona wszystkie testy, bądź jeśli na pewnym teście program i brute dadzą inny wynik.
 #W tym drugim przypadku wypisze numer testu na konsolę, plik in będzie zawierał wejście na którym były różne wyniki, a pliki out wyjścia.
-#Nie wiem jak działa ten diff, pewnie trzeba uważać na białe znaki, ale to chyba nie jest wielki problem.
+#Opcja -b w diff mówi, żeby ignorował liczbę powtórzeń białych znaków
 
 #! /bin/bash
 PROG=$1
@@ -22,7 +22,7 @@ do
     ./$GEN $i > $IN;
     ./$PROG < $IN > $OUT;
     ./$BRUTE < $IN > $BOUT;
-    if ! diff $BOUT $OUT;
+    if ! diff -b $BOUT $OUT;
         then
             echo $i
             break
