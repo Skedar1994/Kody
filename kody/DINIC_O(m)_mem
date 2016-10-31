@@ -106,3 +106,62 @@ struct Dinic
 		return ans;
 	}
 };
+
+/*
+UWAGA nie testowalem czy to ponizej dziala z long longami
+dla kazdej krawedzi mozemy ustalic minimalny i maksymalny przeplyw
+LRMaxFlow zwroci wielkosc maxflowa dla tych ograniczen albo -1 gdy sie nie da ich spelnic
+jesli s = t = -1 to LRMaxFlow sprawdzi, czy istnieje jakis obieg zamkniety spelniajacy dane ograniczenia (-1 jesli sie nie da, cos innego w przeciwnym przypadku)
+*/
+struct Edge
+{
+	int a, b;
+	ll mini, maxi;
+};
+
+
+ll LRMaxFlow(int n, int s, int t, const vector <Edge>& edges)
+{
+	for(auto& el : edges)
+		if (el.maxi < el.mini)
+		{
+			return -1;
+		}
+	int big_source = n+1, big_sink = n+2;
+	Dinic dinic(n+2, big_source, big_sink); 
+	vector < ll > du(n+3, 0);
+	ll sum = 0;
+	for(auto& el : edges)
+	{
+		if (el.mini)
+		{
+			du[el.a] -= el.mini;
+			du[el.b] += el.mini;
+		}
+		if (el.mini != el.maxi)
+			dinic.add_edge(el.a, el.b, el.maxi - el.mini);
+	}
+	if (s != -1)
+		dinic.add_edge(t, s, INF);
+	for(int i=1; i<=n+2; i++)
+	{
+		if (!du[i])
+			continue;
+		if(du[i] < 0)
+			dinic.add_edge(i, n+2, -du[i]);
+		else
+		{
+			dinic.add_edge(n+1, i, du[i]);
+			sum += du[i];
+		}
+	}
+	ll flow1 = dinic.flow();
+	if (flow1 < sum)
+		return -1;
+	if (s == -1)
+		return sum;	
+	dinic.source = s;
+	dinic.sink = t;
+	ll flow2 = dinic.flow();
+	return flow2;
+}
