@@ -3,6 +3,7 @@
 
 using namespace std;
 
+//sprawdzic czy V oraz E sa wystarczajaco duze
 //na poczatku uzywamy funkcji init - zrodlo, ujscie, liczba wierzcholkow
 //potem dodajemy krawedzie funkcja add
 //na koniec wywolujemy solve()
