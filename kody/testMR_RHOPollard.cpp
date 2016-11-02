@@ -1,10 +1,4 @@
-#include <bits/stdc++.h>
-typedef unsigned long long ull;
-typedef long long ll;
-typedef unsigned int uint;
-using namespace std;
-
-#define LT 2						//dla liczb powyzej miliona powinno wystarczyc 1
+#define LT 2						//dla liczb powyzej miliona powinno wystarczyc 2 (czasem 1)
 
 ull DOTESTU[6] = {61, 2, 3, 5, 7, 11};
 
