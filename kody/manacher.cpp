@@ -1,8 +1,3 @@
-#include <iostream>
-#include <string>
-
-using namespace std;
-
 string s;
 int tab[1000005];
 
@@ -23,10 +18,4 @@ void manacher()//tylko dla parystych, zdublowac kazda litere!
             r = aktr; 
         }
     }
-}
-
-int main()
-{
-
-    return 0;
 }
