@@ -1,58 +1,52 @@
-ld eps = 0.000000001;
+typedef long long R;//uwaga, tu jest long long!
+typedef complex<R> C;
 
-struct punkt
+#define x real()
+#define y imag()
+
+
+R det(C c1, C c2) { return c1.x * c2.y - c1.y * c2.x;}
+
+struct Wk
 {
+	C wsp;
 	int nr;
-	ll x, y;
-	ld kat;//atan2 zbyt niedokladny, zamineic na iloczyn wektorowy?
-	punkt(){}
-	punkt(int x, int y, int nr):x(x), y(y), nr(nr){kat = atan2(y, x);}
-	bool operator<(punkt p) const{if(kat<p.kat-eps || (abs(kat-p.kat)<eps && abs(x)+abs(y)<abs(p.x)+abs(p.y)))return true; return false;}
-	int il_wek(punkt p1, punkt p2){return (p1.x-x)*(p2.y-y) - (p1.y-y)*(p2.x-x);}
-	punkt& operator-=(punkt p){x-=p.x;y-=p.y;kat=atan2(x, y); return *this;}
-	punkt& operator+=(punkt p){x+=p.x;y+=p.y;kat=atan2(x, y); return *this;}
 };
 
-void otoczka(int n, vector < punkt > &V, vector < punkt > &ODP)
+C start;
+
+bool op(const Wk& w1, const Wk& w2)
 {
-	punkt przes(1000000005, 1000000005, -1);
-	for(int i=0; i<n; i++)
-		if (V[i].y < przes.y || (V[i].y == przes.y && V[i].x < przes.x))
-			przes = V[i];
-	for(int i=0; i<V.size(); i++)
-		V[i]-=przes;
-	sort(V.begin(), V.end());
-	ODP.push_back(punkt(0, 0, przes.nr));
-	for(int i=0; i<n; i++)
-	{
-		if (przes.nr == V[i].nr)
-			continue;
-		punkt& akt = V[i];
-		while(ODP.size() > 1 && ODP[ODP.size()-2].il_wek(ODP.back(), akt) >= 0)
-			ODP.pop_back();
-		ODP.push_back(akt);
-	}
-	for(int i=0; i<ODP.size(); i++)
-		ODP[i] += przes;
-	while(ODP.size() > 2 && ODP[ODP.size()-2].il_wek(ODP.back(), ODP[0]) >= 0)
-		ODP.pop_back();
+	C ws1(w1.wsp- start), ws2(w2.wsp - start);
+	ll cross = det(ws1, ws2);
+	if (!cross)
+		return norm(ws1) < norm(ws2);
+	return cross > 0;
 }
-int main()
+//dodajemy punkty (Wk) i na koniec odpalamy policz. wynik jest w odp
+struct Convex_Hull
 {
-	ios_base::sync_with_stdio(0);
-	int n;
-	cin>>n;
-	vector < punkt > V(n), ODP;
-	for(int i=0; i<n; i++)
+	vector < Wk > pkty;
+	vector < Wk > odp;
+	void dodaj(Wk& W) { pkty.pb(W);}
+	void policz()
 	{
-		int x, y;
-		cin>>x>>y;
-		V[i] = punkt(x, y, i);
+		assert(SZ(pkty));
+		start = pkty[0].wsp;
+		int ind = 0;
+		for(int i=1; i<SZ(pkty); i++)
+			if (pkty[i].wsp.y < start.y || (pkty[i].wsp.y == start.y && pkty[i].wsp.x < start.x))
+				start = pkty[i].wsp, ind = i;
+		odp.pb(pkty[ind]);
+		pkty.erase(pkty.begin() + ind);
+		sort(all(pkty), op);
+		for(int i=0; i<SZ(pkty); i++)
+		{
+			while(odp.size() > 1 && det(odp.back().wsp - odp[SZ(odp)-2].wsp, pkty[i].wsp - odp[SZ(odp)-2].wsp) <= 0)
+				odp.pop_back();
+			odp.pb(pkty[i]);
+		}
+		while(odp.size() > 2 && det(odp.back().wsp - odp[SZ(odp)-2].wsp, odp[0].wsp - odp[SZ(odp)-2].wsp) <= 0)
+			odp.pop_back();
 	}
-	otoczka(n, V, ODP);
-	for(int i=0; i<ODP.size(); i++)
-		cout<<ODP[i].x<<" "<<ODP[i].y<<"\n";
-	cout<<ODP[0].x<<" "<<ODP[0].y<<"\n";
-	
-	return 0;
-}
+};
