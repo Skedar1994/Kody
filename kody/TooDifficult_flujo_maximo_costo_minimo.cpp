@@ -1,8 +1,4 @@
-#include<bits/stdc++.h>
 #define rep(i,a,n) for (int i=a;i<n;i++)
-
-using namespace std;
-
 //sprawdzic czy V oraz E sa wystarczajaco duze
 //na poczatku uzywamy funkcji init - zrodlo, ujscie, liczba wierzcholkow
 //potem dodajemy krawedzie funkcja add
@@ -51,7 +47,4 @@ namespace mincost {
 		flow=0,cost=0;
 		while (spfa()) augment();
 	}
-}
-
-int main() {
 }
