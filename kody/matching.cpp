@@ -75,3 +75,8 @@ int matching(int n)
 1. W str[i] kazdy wierzcholek powinien miec nr 0 lub 1 -> w zaleznosci od tego, po ktorej stronie grafu dwudzielnego jest
 2. Wierzcholki numerujemy od 1!
 */
+void clear(int n)
+{
+	V.clear();
+  memset(para, 0, 4*(n+1));
+}
