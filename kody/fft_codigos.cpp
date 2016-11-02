@@ -1,8 +1,4 @@
-#include <bits/stdc++.h>
 #define MAXN (1<<19)
-
-using namespace std;
-
 struct Complex{
 	double x,y;
 
@@ -66,10 +62,4 @@ void fft_mult(int nP, int nQ){
 	fft(nR,Q,1);
 	for(int i = 0;i < nR;i++) R[i] = P[i] * Q[i];
 	fft(nR,R,-1);
-}
-
-
-int main()
-{
-	return 0;
 }
