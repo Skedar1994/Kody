@@ -3,6 +3,9 @@
 int odl[MAXN], str[MAXN], para[MAXN], odw[MAXN];
 vector < vector < int > > V;
 
+//po usunieciu zmiennej zostalo jest zazwyczaj szybciej (moze nawet jakies 1.5 raza)
+//ale nie moge wtedy obiecac, ze na 100% bedzie zlozonosc O(msqrt(n))
+
 bool DFS(int v, int ojciec, int zostalo)
 {
     if (zostalo < 0)
