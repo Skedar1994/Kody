@@ -1,20 +1,3 @@
-#include<bits/stdc++.h>
-#define rep(i,k,n) for(ll i= (ll) k;i< (ll) n;i++)
-#define all(v) (v).begin(), (v).end()
-#define SZ(v) (int)((v).size())
-#define pb push_back
-#define ft first
-#define sd second
-typedef long long ll;
-typedef unsigned long long ull;
-typedef long double ld;
-const long long INF = 4e18L + 1;
-const int IINF = 2e9 + 1;
-const int limit = 1048576;
-
-using namespace std;
-
-//wierzcholki numerujemy od 1
 struct LCA
 {
 	int n, k, czas, pot;
@@ -62,7 +45,3 @@ struct LCA
 		return cz[mini];
 	}
 };
-
-int main()
-{
-}
