@@ -1,8 +1,4 @@
-#include <iostream>
 #define LL long long
-
-using namespace std;
-
 pair < LL, LL > NWD (LL a, LL b)
 {
     pair < LL, LL > P;
@@ -17,9 +13,4 @@ pair < LL, LL > NWD (LL a, LL b)
     P = NWD(b%a, a);
     pair < LL, LL > P2 = make_pair(P.second - (b/a)*P.first, P.first);
     return P2; 
-}
-
-int main()
-{
-    return 0;       
 }
