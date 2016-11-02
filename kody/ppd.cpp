@@ -1,11 +1,3 @@
-#include <bits/stdc++.h>
-#define pb push_back
-#define ft first
-#define sd second
-#define nullptr NULL
-typedef long long ll;
-using namespace std;
-
 struct wezel
 {
 	int war;
@@ -86,9 +78,3 @@ struct drzewo
 		return wynik;
 	}
 };
-
-int main()
-{
-	
-	return 0;
-}
