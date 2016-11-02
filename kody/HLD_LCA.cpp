@@ -1,10 +1,3 @@
-#include <bits/stdc++.h>
-#define pb push_back
-#define inf 2000000005
-#define ll long long
-
-using namespace std;
-
 struct drz_prz
 {
 	vector < int > V;
@@ -191,36 +184,3 @@ struct LCA
 		return cz[mini];
 	}
 };
-
-int main()
-{
-	int n;
-	cin>>n;
-	vector < vector < int > > V(n+1);
-	for(int i=0; i<n-1; i++)
-	{
-		int a, b;
-		cin>>a>>b;
-		V[a].pb(b);
-		V[b].pb(a);
-	}
-	LCA lca(n, 1, V);
-	HLD hld(V, 1);
-	
-	int q;
-	cin>>q;
-	while(q--)
-	{
-		char c;
-		int a, b;
-		cin>>c>>a>>b;
-		if (c == 'I')
-			hld.dodaj(a, a, b);
-		else
-		{
-			int anc = lca.znajdz(a, b);
-			int m1 = hld.maxi(a, anc), m2 = hld.maxi(b, anc);
-			cout << max(m1, m2) << "\n";
-		}
-	}
-}
