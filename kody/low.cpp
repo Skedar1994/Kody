@@ -1,13 +1,3 @@
-#include <bits/stdc++.h>
-#define rep(i, j, k) for(int i = (int) j; i < (int) k; i++)
-#define pb push_back
-#define all(v) v.begin(), v.end()
-typedef long long ll;
-typedef long double ld;
-using namespace std;
-const ll MOD = 1000000007;
-
-
 struct AB {
     vector<vector<int> >nei;
     vector<int> AP;
