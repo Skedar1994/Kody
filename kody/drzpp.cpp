@@ -1,7 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-typedef long long ll;
-
 struct wezel
 {
 	ll war;//tylko dla maks
@@ -83,39 +79,3 @@ struct drzewoprzedzialowe //max->min wystarczy zrobic define max min
 		return suma;
 	}
 };
-
-int main()
-{
-	ios_base::sync_with_stdio(0); cin.tie(0);
-	int n, q, pom;
-	cin>>n >> q;
-	drzewoprzedzialowe d(n);
-	for(int i=1; i<=n; i++)
-	{
-		cin>>pom;
-		d.dodaj(i, i, pom);
-	}
-	while(q--)
-	{
-		int a, b, c;
-		char cc;
-		cin>>cc;
-		
-		if (cc == 'M')
-		{
-			cin>>b>>c;
-			cout << d.maks(b, c) << endl;
-		}
-		if (cc == 'P')
-		{
-			cin>>a>>b>>c;
-			d.dodaj(a, b, c);
-		}
-		if (cc == 'S')
-		{
-			cin>>b>>c;
-			cout<<d.suma(b, c)<<"\n";
-		}
-	}
-	getchar();
-}
