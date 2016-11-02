@@ -9,7 +9,9 @@ pair < LL, LL > NWD (LL a, LL b)
       return make_pair(0, 1);
     }
     pair < LL, LL > P = NWD(b%a, a);
-    pair < LL, LL > P2 = make_pair ((P.second - (b/a)*P.first)%(b/nwd), (P.first)%(a/nwd));
+    pair < LL, LL > P2 = make_pair ((P.second - (b/a)*P.first), (P.first));
+    if (b != nwd)
+    	P2.ft %= (b/nwd), P2.sd %= (a/nwd);
     return P2; 
 }
 
