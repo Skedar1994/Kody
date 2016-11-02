@@ -1,7 +1,4 @@
-#include <bits/stdc++.h>
 #define MAXN 100001
-
-using namespace std;
 
 int odl[MAXN], str[MAXN], para[MAXN], odw[MAXN];
 vector < vector < int > > V;
@@ -75,7 +72,3 @@ int matching(int n)
 1. W str[i] kazdy wierzcholek powinien miec nr 0 lub 1 -> w zaleznosci od tego, po ktorej stronie grafu dwudzielnego jest
 2. Wierzcholki numerujemy od 1!
 */
-
-int main()
-{
-}
