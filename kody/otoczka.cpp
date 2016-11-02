@@ -1,10 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-typedef long double ld;
-typedef long long ll;
-
 ld eps = 0.000000001;
 
 struct punkt
