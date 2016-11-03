@@ -28,8 +28,9 @@ ull pot(ull x, ull wyk, ull MOD)
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //UWAGA LT = 1 to czasem za mało, zbyt małe LT może być powodem WA !!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-bool TestMR(ull liczba) //dla malych liczb sito? 0 gdy zlozona
+//dla malych liczb sito? (najlepiej yarin sieve, znajduje wszystkie pierwsze do 10^9 w 5 sekund) 
+//0 gdy zlozona
+bool TestMR(ull liczba) 
 {
     bool czy;
     if (liczba%2==0)
