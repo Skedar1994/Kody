@@ -24,7 +24,7 @@ Returns the number of 1-bits in x.
 — Built-in Function: int __builtin_parity (unsigned int x)
 Returns the parity of x, i.e. the number of 1-bits in x modulo 2.
 
-Iteracja po wszystkich podmaskach
+Iteracja po wszystkich niepustych podmaskach 
 for (int x = y; x > 0; x = y & (x-1))
 
 /*
