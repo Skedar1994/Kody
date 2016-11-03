@@ -26,6 +26,11 @@ Returns the parity of x, i.e. the number of 1-bits in x modulo 2.
 
 Iteracja po wszystkich niepustych podmaskach 
 for (int x = y; x > 0; x = y & (x-1))
+	
+Inne	
+int sprintf ( char * str, const char * format, ... );//najlepiej zrobic pomocnicza tablice char buffer[] na pierwszy argument
+char * itoa ( int value, char * str, int base );//najlepiej zrobic pomocnicza tablice char buffer[] na drugi argument
+int atoi (const char * str);
 
 /*
 Maksymalna liczba dzielników dla:
