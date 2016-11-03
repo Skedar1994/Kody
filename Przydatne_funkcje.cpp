@@ -24,6 +24,9 @@ Returns the number of 1-bits in x.
 — Built-in Function: int __builtin_parity (unsigned int x)
 Returns the parity of x, i.e. the number of 1-bits in x modulo 2.
 
+Iteracja po wszystkich podmaskach
+for (int x = y; x > 0; x = y & (x-1))
+
 /*
 Maksymalna liczba dzielników dla:
 Niewiekszych niz: 10^1 maksymalna liczba dzielnikow : 4
