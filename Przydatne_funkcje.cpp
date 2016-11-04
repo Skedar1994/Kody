@@ -52,3 +52,16 @@ Niewiekszych niz: 10^15 maksymalna liczba dzielnikow : 26880
 Niewiekszych niz: 10^16 maksymalna liczba dzielnikow : 41472
 Niewiekszych niz: 10^17 maksymalna liczba dzielnikow : 64512
 */
+
+/* N | Liczba partycji liczby N na sumę:
+10 | 42
+20 | 627
+30 | 5 604
+40 | 37 338
+50 | 204 226
+60 | 966 467
+70 | 4 087 968
+80 | 15 796 476
+90 | 56 634 173
+100 | 190 569 292
+*/
