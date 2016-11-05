@@ -6,7 +6,7 @@ typedef complex<R> C;
 
 static bool whatever;
 
-const R eps = 1e-10;
+const R eps = 1e-12;
 
 bool eq(R r1, R r2) { return fabs(r1 - r2) < eps; }
 
@@ -27,7 +27,11 @@ struct line{
     line() = default;
 
     bool operator <(const line& other) const {
-        return make_pair(arg(n), -c) < make_pair(arg(other.n), -other.c);
+        if(eq(arg(n), arg(other.n))){
+            return c > other.c;
+        } else {
+            return arg(n) < arg(other.n);
+        }
     }
 
 	C dir() const { return n * C(0, -1); }
@@ -137,3 +141,24 @@ vector<C> poly(const vector<line>& lns) {
     }
     return ans;
 }
+
+struct Circ{
+    C cent;
+    R rad;
+    Circ(C icent, R irad)
+        :cent{icent}, rad{irad} {}
+
+    Circ() = default;
+};
+
+
+R triangle_area(C v1, C v2, C v3){ return fabs(det(v2 - v1, v2 - v3)) / 2.0; }
+
+R poly_area(vector<C> poly){
+    R res = 0.0;
+    rep(i, 1, SZ(poly) - 1){
+        res += triangle_area(poly[0], poly[i], poly[i + 1]);
+    }
+    return res;
+}
+
