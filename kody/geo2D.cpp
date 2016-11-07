@@ -18,10 +18,10 @@ struct line{
 	R c;
 	line(C n1, R c1) 
 		:n{n1 / abs(n1)}, c{c1} {}
-	
 	line(C p1, C p2) 
 		:n{((p2 - p1) / abs(p2 - p1)) * C(0, 1)}, c{dot(p1, n)} {}
-
+    line(R a, R b)
+        :line(C(a, -1.0), b){}
     line() = default;
 
     bool operator <(const line& other) const {
@@ -35,7 +35,9 @@ struct line{
 	C dir() const { return n * C(0, -1); }
 	
 	C val(R t) const { return c * n + t * dir();}
-	
+    R y_val(R x1) const { return (c - n.x * x1) / n.y; }
+    R x_val(R y1) const { return (c - n.y * y1) / n.x; }
+
 	R tis(const line& other) const {
 		if(eq(det(n, other.n), 0)){
             return 0;
