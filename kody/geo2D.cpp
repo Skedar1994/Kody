@@ -20,11 +20,11 @@ struct line{
 		:n{n1 / abs(n1)}, c{c1} {}
 	line(C p1, C p2) 
 		:n{((p2 - p1) / abs(p2 - p1)) * C(0, 1)}, c{dot(p1, n)} {}
-    line(R a, R b)
-        :line(C(a, -1.0), b){}
-    line() = default;
+    	line(R a, R b)
+        	:line(C(a, -1.0), b){}
+    	line() = default;
 
-    bool operator <(const line& other) const {
+   	bool operator <(const line& other) const {
         if(eq(arg(n), arg(other.n))){
             return c > other.c;
         } else {
