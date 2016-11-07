@@ -124,6 +124,8 @@ bool wrong(const line& l_prev, const line& l_last, const line& l_new) {
 }
 
 deque<line> cor(const vector<line>& lns) {
+	sort(all(lns));
+    lns.resize(distance(lns.begin(), unique(all(lns), [](line l1, line l2){ return eq(dot(l1.n, l2.n), 1.0); })));
     deque<line> ans;
     for(auto& l : lns) {
         while(SZ(ans) >= 2 and wrong(ans.rbegin()[1], ans.back(), l)) {
@@ -140,8 +142,6 @@ vector<line> hplane(vector<line> lns) {
     //if(!check_hplane(lns)){
 	//	return vector<line>();
 	//}
-	sort(all(lns));
-    lns.resize(distance(lns.begin(), unique(all(lns), [](line l1, line l2){ return eq(dot(l1.n, l2.n), 1.0); })));
     vector<line> lup, ldown;
     for(auto& l : lns) {
         if(arg(l.n) > 0) {
