@@ -78,6 +78,42 @@ C is(const seg& s, const line& l, bool& ok = whatever) {
     return s.l.val(t);
 }
 
+C max_v(const C& v1, const C& v2, const C& od){ return max(v1, v2, [&od](const C& a, const C& b){return dot(a, od) < dot(b, od);});}
+
+bool empty_is(const line& l1, const line& l2) { return eq(dot(l1.n, l2.n), -1.0) and l1.c + eps > -l2.c;}
+
+static C whatever;
+bool check_hplane(vector<line> hplanes, C& pt_in = whatever){
+    random_shuffle(all(hplanes));
+    C od = -hplanes[0].n;
+    pt_in = hplanes[0].val(0);
+    for(auto& l1 : hplanes){
+        if(dot(l1.n, pt_in) < l1.c - eps){
+            R min_t = -INF, max_t = INF;
+            for(auto& l2 : hplanes){
+                if(&l2 != &l1){
+                    R dp = dot(l1.dir(), l2.n), ti = l1.tis(l2);
+                    if(dp > eps){
+                        min_t = max(min_t, ti);
+                    } else if(dp < -eps){
+                        max_t = min(max_t, ti);
+                    } else if(empty_is(l1, l2)){
+                        return false;
+                    }
+                } else {
+                    if(min_t > max_t){
+                        return false;
+                    } else{
+                        pt_in = max_v(l1.val(max_t), l1.val(min_t), od);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    return true;
+}
+
 bool wrong(const line& l_prev, const line& l_last, const line& l_new) { 
     if(!eq(det(l_last.n, l_new.n), 0)) {
         return l_last.tis(l_new) < l_last.tis(l_prev) + eps;
@@ -97,10 +133,13 @@ deque<line> cor(const vector<line>& lns) {
     return ans;
 }
 
-bool empty_is(const line& l1, const line& l2) { return eq(dot(l1.n, l2.n), -1.0) and l1.c + eps > -l2.c;}
-
 vector<line> hplane(vector<line> lns) {
-    sort(all(lns));
+	//Mniej niż 3 proste w wyniku mogą oznaczać przekrój pusty lub nieograniczony.
+	//Jak chcemy móc to rozróżnić, to trzeba tu ręcznie sprawdzić.
+    //if(!check_hplane(lns)){
+	//	return vector<line>();
+	//}
+	sort(all(lns));
     lns.resize(distance(lns.begin(), unique(all(lns), [](line l1, line l2){ return eq(dot(l1.n, l2.n), 1.0); })));
     vector<line> lup, ldown;
     for(auto& l : lns) {
