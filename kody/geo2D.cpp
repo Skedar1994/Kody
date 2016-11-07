@@ -4,6 +4,7 @@ typedef complex<R> C;
 #define x real()
 #define y imag()
 
+static bool whateverb;
 const R eps = 1e-12;
 
 bool eq(R r1, R r2) { return fabs(r1 - r2) < eps; }
@@ -66,13 +67,13 @@ struct seg{
 	bool okt(R t) const { return eq(fabs(t - start) + fabs(t - end), len()); }
 };
 
-C is(const seg& s1, const seg& s2, bool& ok = whatever) {
+C is(const seg& s1, const seg& s2, bool& ok = whateverb) {
 	R t1 = s1.l.tis(s2.l), t2 = s2.l.tis(s1.l);
 	ok = !eq(det(s1.l.n, s2.l.n), 0) and s1.okt(t1) and s2.okt(t2);
 	return s1.l.val(t1);
 }
 
-C is(const seg& s, const line& l, bool& ok = whatever) {
+C is(const seg& s, const line& l, bool& ok = whateverb) {
 	R t = s.l.tis(l);
 	ok = s.okt(t) and !eq(det(s.l.n, l.n), 0); 
     return s.l.val(t);
@@ -82,8 +83,8 @@ C max_v(const C& v1, const C& v2, const C& od){ return max(v1, v2, [&od](const C
 
 bool empty_is(const line& l1, const line& l2) { return eq(dot(l1.n, l2.n), -1.0) and l1.c + eps > -l2.c;}
 
-static C whatever;
-bool check_hplane(vector<line> hplanes, C& pt_in = whatever){
+static C whateverc;
+bool check_hplane(vector<line> hplanes, C& pt_in = whateverc){
     random_shuffle(all(hplanes));
     C od = -hplanes[0].n;
     pt_in = hplanes[0].val(0);
