@@ -4,8 +4,6 @@ typedef complex<R> C;
 #define x real()
 #define y imag()
 
-static bool whatever;
-
 const R eps = 1e-12;
 
 bool eq(R r1, R r2) { return fabs(r1 - r2) < eps; }
