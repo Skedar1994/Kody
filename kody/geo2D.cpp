@@ -123,7 +123,7 @@ bool wrong(const line& l_prev, const line& l_last, const line& l_new) {
     }
 }
 
-deque<line> cor(const vector<line>& lns) {
+deque<line> cor(vector<line> lns) {
 	sort(all(lns));
     lns.resize(distance(lns.begin(), unique(all(lns), [](line l1, line l2){ return eq(dot(l1.n, l2.n), 1.0); })));
     deque<line> ans;
@@ -136,7 +136,7 @@ deque<line> cor(const vector<line>& lns) {
     return ans;
 }
 
-vector<line> hplane(vector<line> lns) {
+vector<line> hplane(const vector<line>& lns) {
 	//Mniej niż 4 proste w wyniku mogą oznaczać przekrój pusty lub nieograniczony.
 	//Jak chcemy móc to rozróżnić, to trzeba tu ręcznie sprawdzić.
     //if(!check_hplane(lns)){
