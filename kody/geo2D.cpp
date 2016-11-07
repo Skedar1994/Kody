@@ -135,7 +135,7 @@ deque<line> cor(const vector<line>& lns) {
 }
 
 vector<line> hplane(vector<line> lns) {
-	//Mniej niż 3 proste w wyniku mogą oznaczać przekrój pusty lub nieograniczony.
+	//Mniej niż 4 proste w wyniku mogą oznaczać przekrój pusty lub nieograniczony.
 	//Jak chcemy móc to rozróżnić, to trzeba tu ręcznie sprawdzić.
     //if(!check_hplane(lns)){
 	//	return vector<line>();
