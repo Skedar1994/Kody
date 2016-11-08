@@ -1,38 +1,50 @@
-#define ILE 10
-ld dist(pair < ll, ll > P1, pair < ll, ll > P2)
-{
-	ld dx = P1.ft - P2.ft, dy = P1.sd - P2.sd;
-	return sqrt(dx*dx + dy*dy);
-}
+typedef long long R;//!!!!!!!!!!!!!!!!!
+typedef complex<R> C;
 
-ld najkrotszy(vector < pair < ll, ll > > V)
+#define x real()
+#define y imag()
+
+
+#define ILE 10
+
+struct sortx : binary_function <C,C,bool> {
+  bool operator() (const C& A, const C& B) const {return A.x<B.x;}
+};
+
+struct sorty : binary_function <C,C,bool> {
+  bool operator() (const C& A, const C& B) const {return A.x<B.x;}
+};
+
+
+ld najkrotszy(vector < C > V)
 {
-	sort(all(V));
-	set < pair < ll, ll > > po_X, po_Y;
-	ld najkrotszy = 1e50;
+	sort(all(V), sortx());
+	set < C, sortx > po_X;
+	set < C, sorty > po_Y;
+	R najkrotszy = (1ll << 62);
 	for(int i=0; i<SZ(V); i++)
 	{
-		ll aktx = V[i].ft;
-		while(po_X.begin() != po_X.end() && ld(aktx - po_X.begin()->ft) > najkrotszy) 
+		ll aktx = V[i].x;
+		while(po_X.begin() != po_X.end() && (aktx - po_X.begin()->x)*(aktx - po_X.begin()->x) > najkrotszy) 
 		{
-			po_Y.erase(po_Y.find(make_pair(po_X.begin()->sd, po_X.begin()->ft)));
+			po_Y.erase(po_Y.find(*po_X.begin()));
 			po_X.erase(po_X.begin());
 		}
-		set < pair < ll, ll > >::iterator it1, it2;
-		po_X.insert(make_pair(V[i].ft, V[i].sd));
-		it2 = it1 = po_Y.insert(make_pair(V[i].sd, V[i].ft)).first;
+		set < C >::iterator it1, it2;
+		po_X.insert(V[i]);
+		it2 = it1 = po_Y.insert(V[i]).ft;
 	 	int ile = ILE;
 		while(ile-- && it1 != po_Y.begin())
 		{
 			it1--;
-			najkrotszy = min(najkrotszy, dist((*it1), make_pair(V[i].sd, V[i].ft)));
+			najkrotszy = min(najkrotszy, norm((*it1) - V[i]));
 		}
 		ile = ILE; it2++;
 		while(ile-- && it2 != po_Y.end())
 		{
-			najkrotszy = min(najkrotszy, dist((*it2), make_pair(V[i].sd, V[i].ft)));
+			najkrotszy = min(najkrotszy, norm((*it2) - V[i]));
 			it2++;
 		}
 	}
-	return najkrotszy;
+	return sqrt(ld(najkrotszy));
 }
