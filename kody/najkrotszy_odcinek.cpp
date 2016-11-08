@@ -1,4 +1,4 @@
-typedef long long R;//!!!!!!!!!!!!!!!!!
+typedef long long R;//!!!!!!!!!!!!!!!!! long long
 typedef complex<R> C;
 
 #define x real()
