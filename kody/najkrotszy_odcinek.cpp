@@ -7,12 +7,12 @@ typedef complex<R> C;
 
 #define ILE 10
 
-struct sortx /*: binary_function <C,C,bool>*/ {
+struct sortx {
   bool operator() (const C& A, const C& B) const {return A.x<B.x;}
 };
 
-struct sorty /*: binary_function <C,C,bool>*/ {
-  bool operator() (const C& A, const C& B) const {return A.x<B.x;}
+struct sorty {
+  bool operator() (const C& A, const C& B) const {return A.y<B.y;}
 };
 
 
