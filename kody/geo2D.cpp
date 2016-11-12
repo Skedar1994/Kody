@@ -202,3 +202,17 @@ R poly_area(vector<C> poly){
     return res;
 }
 
+vector<C> poly_cut(const vector<C>& poly, line l){
+    vector<C> poly1;
+    rep(i, 0, SZ(poly)){
+        if(dot(poly[i], l.n) > l.c){
+            poly1.pb(poly[i]);
+        }
+        bool does_is;
+        C isp = is(seg(poly[i], poly[(i + 1) % SZ(poly)]), l, does_is);
+        if(does_is){
+            poly1.pb(isp);
+        }
+    }
+    return poly1;
+}
