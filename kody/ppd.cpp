@@ -10,7 +10,6 @@ struct wezel
 			delete l;
 			delete p;
 		}
-		delete &war;
 	}
 };
 struct drzewo
