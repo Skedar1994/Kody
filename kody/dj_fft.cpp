@@ -3,7 +3,7 @@ typedef unsigned T;//ma byc unsigned int albo ll albo ull
 const T P = 2013265921; //15*2^27+1
 const T ROOT = 440564289; //root
 const int MN=21; // musi być < 26
-unsigned omega[1<<MN];
+T omega[1<<MN];
 
 
 T pw (T x, T n) {
