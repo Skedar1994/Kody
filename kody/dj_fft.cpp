@@ -1,4 +1,5 @@
 typedef unsigned T;//ma byc unsigned int albo ll albo ull
+//jak sie przekrecimy przez inta to zly wynik!
 
 const T P = 2013265921; //15*2^27+1
 const T ROOT = 440564289; //root
