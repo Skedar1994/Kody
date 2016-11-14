@@ -1,52 +1,57 @@
-typedef long long R;//uwaga, tu jest long long!
+typedef long long R;
 typedef complex<R> C;
 
 #define x real()
 #define y imag()
 
-
-R det(C c1, C c2) { return c1.x * c2.y - c1.y * c2.x;}
-
-struct Wk
-{
-	C wsp;
-	int nr;
-};
+R det(C c1, C c2){ return c1.x * c2.y - c1.y * c2.x; }
 
 C start;
 
-bool op(const Wk& w1, const Wk& w2)
-{
-	C ws1(w1.wsp- start), ws2(w2.wsp - start);
+bool op(const C& w1, const C& w2){
+	C ws1 = w1 - start, ws2 = w2 - start;
 	ll cross = det(ws1, ws2);
-	if (!cross)
+	if(!cross){
 		return norm(ws1) < norm(ws2);
+	}
 	return cross > 0;
 }
-//dodajemy punkty (Wk) i na koniec odpalamy policz. wynik jest w odp
-struct Convex_Hull
-{
-	vector < Wk > pkty;
-	vector < Wk > odp;
-	void dodaj(Wk& W) { pkty.pb(W);}
-	void policz()
-	{
-		assert(SZ(pkty));
-		start = pkty[0].wsp;
+
+//zmienic <= na <, jesli maja byc punkty wspolliniowe na otoczce
+bool wrong(const C& v1, const C& v2, const C& v3){ return det(v2 - v1, v3 - v1) <= 0;}
+
+struct Convex_Hull{
+	vector<C> pkty;
+	vector<C> odp;
+	void dodaj(C& c) { pkty.pb(c); }
+	void policz() {
+		start = pkty[0];
 		int ind = 0;
-		for(int i=1; i<SZ(pkty); i++)
-			if (pkty[i].wsp.y < start.y || (pkty[i].wsp.y == start.y && pkty[i].wsp.x < start.x))
-				start = pkty[i].wsp, ind = i;
+		for(int i = 1; i < SZ(pkty); i++){
+			if(pkty[i].y < start.y or (pkty[i].y == start.y and pkty[i].x < start.x)){
+				start = pkty[i], ind = i;
+			}
+		}
 		odp.pb(pkty[ind]);
 		pkty.erase(pkty.begin() + ind);
 		sort(all(pkty), op);
-		for(int i=0; i<SZ(pkty); i++)
-		{
-			while(odp.size() > 1 && det(odp.back().wsp - odp[SZ(odp)-2].wsp, pkty[i].wsp - odp[SZ(odp)-2].wsp) <= 0)
-				odp.pop_back();
-			odp.pb(pkty[i]);
+		/* odkomentowac jesli maja byc wspolliniowe
+		int i;
+		for(i = 0; i < SZ(pkty) - 1; i++){
+			if(det(pkty.rbegin()[i] - start, pkty.rbegin()[i + 1] - start) != 0){
+				break;
+			}
 		}
-		while(odp.size() > 2 && det(odp.back().wsp - odp[SZ(odp)-2].wsp, odp[0].wsp - odp[SZ(odp)-2].wsp) <= 0)
+		reverse(pkty.rbegin(), pkty.rbegin() + i + 1);
+		*/
+		for(auto& p : pkty){
+			while(SZ(odp) > 1 and wrong(odp.rbegin()[1], odp.back(), p)){
+				odp.pop_back();
+			}
+			odp.pb(p);
+		}
+		while(SZ(odp) > 2 and wrong(odp.rbegin()[1], odp.back(), odp[0])){
 			odp.pop_back();
+		}
 	}
 };
