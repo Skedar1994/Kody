@@ -196,6 +196,12 @@ struct Splay
 			w->l->p = 0;
 		join(T1, T2);
 	}
+	unsigned int size()
+	{
+		if (!korzen)
+			return 0;
+		return korzen->wp;
+	}
 /// uzywaj albo tego
 	void dodaj_na_koniec(TYP war){dodaj_na_koniec(new wezel(war));}
 	void dodaj_na_koniec(wezel* w)
