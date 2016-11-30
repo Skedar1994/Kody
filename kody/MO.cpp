@@ -1,12 +1,8 @@
 /*
-Przed uzyciem MO musimy uzupelnic ponizsze 4 funkcje. 
+Przed uzyciem MO musimy uzupelnic ponizsze 3 funkcje. 
 (struktura MO mowi tylko, ktore indeksy dodajemy/wyjmujemy z przedzialu.)
-Potem po wywolaniu konstruktora MO w vectorze odp beda odpowiedzi dla kolejnych zapytan (numerujemy od 0);
-koniec calego przedzialu podzielony przez szerokosc musi byc mniejszy niz ile_kubelkow
+Potem po wywolaniu konstruktora MO w vectorze odp beda odpowiedzi dla kolejnych zapytan (numerujemy od 0)
 */
-void czysc()//odpalane na poczatku liczenia wartosci dla danego kubelka
-{
-}
 
 void dodaj(int indeks)
 {
@@ -20,48 +16,58 @@ ll aktualny_wynik()
 {
 }
 
-
+#define szerokosc_kubelka 1000
 struct MO
 {
+	vector < ll > odp;
 	struct Zap
 	{
 		int p, k, nr;
 		Zap(int _p, int _k, int _nr) : p(_p), k(_k), nr(_nr) {}
-		bool operator<(const Zap& z) const {return p < z.p;}
-	};
-	vector < ll > odp;
-	vector < vector < Zap > > Kubelki;
-	MO(int ile_kubelkow, int szerokosc, const vector < pair < int, int > > &przedzialy) : Kubelki(ile_kubelkow), odp(SZ(przedzialy))
-	{
-		for(int i=0; i<SZ(przedzialy); i++)
-			Kubelki[przedzialy[i].sd/szerokosc].pb(Zap(przedzialy[i].ft, przedzialy[i].sd, i));
-		for(int i=0; i<ile_kubelkow; i++)
+		bool operator<(const Zap& z) const 
 		{
-			if (SZ(Kubelki[i]) == 0)
-				continue;
-			czysc();
-			sort(all(Kubelki[i]));
-			int p = Kubelki[i][0].p, k = p-1;
-			for(int j=0; j<SZ(Kubelki[i]); j++)
+			if (p/szerokosc_kubelka == z.p/szerokosc_kubelka)
+				return k < z.k;
+			return p/szerokosc_kubelka < z.p/szerokosc_kubelka;
+		}
+	};
+	MO(const vector < pair < int, int > > &przedzialy) : odp(SZ(przedzialy))
+	{
+		vector < Zap > zapytania;
+		zapytania.reserve(SZ(przedzialy));
+		for(int i=0; i<SZ(przedzialy); i++)
+			zapytania.pb(Zap(przedzialy[i].ft, przedzialy[i].sd, i));
+		sort(all(zapytania));
+		int p, k;
+		if (SZ(zapytania))
+		{
+			p = zapytania[0].p;
+			k = p-1;
+		}
+		for(int i=0; i<SZ(zapytania); i++)
+		{
+			Zap z = zapytania[i];
+			while(p > z.p)
 			{
-				Zap z = Kubelki[i][j];
-				while(p < z.p)
-				{
-					wyjmij(p);
-					p++;
-				}
-				while(k < z.k)
-				{
-					k++;
-					dodaj(k);
-				}
-				while(k > z.k)
-				{
-					wyjmij(k);
-					k--;
-				}
-				odp[z.nr] = aktualny_wynik();
+				p--;
+				dodaj(p);
 			}
+			while(k < z.k)
+			{
+				k++;
+				dodaj(k);
+			}
+			while(p < z.p)
+			{
+				wyjmij(p);
+				p++;
+			}
+			while(k > z.k)
+			{
+				wyjmij(k);
+				k--;
+			}
+			odp[z.nr] = aktualny_wynik();
 		}
 	}
 };
