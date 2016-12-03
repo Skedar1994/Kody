@@ -126,11 +126,13 @@ vector < pair <ull,int> > rozloz(ll M)
 		{
 			int ile = 1;
 			for(auto& el : V)
+			{
 				while(el % dz==0)
 				{
 					ile++;
 					el /= dz;
 				}
+			}
 			Odp.push_back({dz, ile});
 		}
 		else
