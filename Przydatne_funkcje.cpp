@@ -51,6 +51,7 @@ Niewiekszych niz: 10^14 maksymalna liczba dzielnikow : 17280
 Niewiekszych niz: 10^15 maksymalna liczba dzielnikow : 26880
 Niewiekszych niz: 10^16 maksymalna liczba dzielnikow : 41472
 Niewiekszych niz: 10^17 maksymalna liczba dzielnikow : 64512
+Niewiekszych niz: 10^18 maksymalna liczba dzielnikow : 103680
 */
 
 /* N | Liczba partycji liczby N na sumę:
