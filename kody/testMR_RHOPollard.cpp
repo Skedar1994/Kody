@@ -154,6 +154,24 @@ void sito_eratostenesa()//uzyc na poczatku maina
 				sito[j] = i;
 }
 
+//dostaje rozklad na czynniki pierwsze, zwraca vector ze wszystkimi dzielnikami
+vector < ull > znajdz_dzielniki(vector < pair < ull, int > >& V)
+{
+	vector < ull > odp{1};
+	for(auto& p : V)
+	{
+		int sz = SZ(odp);
+		ull mnoz = 1;
+		for(int i=0; i<p.sd; i++)
+		{
+			mnoz*=p.ft;
+			for(int j=0; j<sz; j++)
+				odp.pb(odp[j] * mnoz);
+		}
+	}
+	return odp;
+}
+
 int main()
 {
 	sito_eratostenesa();
