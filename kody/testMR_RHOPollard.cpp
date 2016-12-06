@@ -32,8 +32,10 @@ ull pot(ull x, ull wyk, ull MOD)
 //0 gdy zlozona
 bool TestMR(ull liczba) 
 {
-    if (liczba%2==0 && liczba != 2)
+    if (liczba < 2)
         return 0;
+    if (liczba%2==0 && liczba != 2)
+		return 0;
     ull s=0, d=liczba-1, a, pom;
     while(d%2==0)
     {
