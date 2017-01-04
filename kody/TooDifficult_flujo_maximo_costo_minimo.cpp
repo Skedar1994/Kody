@@ -1,5 +1,5 @@
 #define rep(i,a,n) for (int i=a;i<n;i++)
-//sprawdzic czy V oraz E sa wystarczajaco duze
+//sprawdzic czy V oraz E sa wystarczajaco duze(uwaga kazda krawedz wstawia sie w dwie strony)
 //na poczatku uzywamy funkcji init - zrodlo, ujscie, liczba wierzcholkow
 //potem dodajemy krawedzie funkcja add
 //na koniec wywolujemy solve()
