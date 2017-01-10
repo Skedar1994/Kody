@@ -66,3 +66,16 @@ Niewiekszych niz: 10^18 maksymalna liczba dzielnikow : 103680
 90 | 56 634 173
 100 | 190 569 292
 */
+
+/*
+strumienie - przydatne rzeczy
+cout.width( 10 );
+cout.fill( '0' );
+cout.setf( ios::hex, ios::basefield );
+cout << l << endl; //3b
+cout.setf( ios::oct, ios::basefield );
+cout << l << endl; //73
+cout.setf( ios::dec, ios::basefield );
+cout << l << endl; //59
+
+*/
