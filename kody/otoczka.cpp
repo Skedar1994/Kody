@@ -54,4 +54,28 @@ struct Convex_Hull{
 			odp.pop_back();
 		}
 	}
+	//zwrca kwadrat odleglosci. wywoluje w sobie szuknie otoczki
+	R najdalsza_para_punktow()
+	{
+		policz();
+		int p = 0, k = 0;
+		for(int i=1; i<SZ(odp); i++)
+		{
+			if (odp[i].x < odp[p].x)
+				p = i;
+			if (odp[i].x >= odp[k].x)
+				k = i;
+		}
+		R wyn = 0;
+		for(int i=0; i<2*SZ(odp); i++)
+		{
+			wyn = max(wyn, (ll)norm(odp[p] - odp[k]));
+			int np = (p + 1) % SZ(odp), nk = (k + 1) % SZ(odp);
+			if (det(odp[p] - odp[np], odp[k] - odp[nk]) < 0)
+				p = np;
+			else
+				k = nk;
+		}
+		return wyn;
+	}
 };
