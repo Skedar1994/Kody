@@ -10,7 +10,6 @@ typedef unsigned long long ull;
 typedef long double ld;
 const long long INF = 4e18L + 1;
 const int IINF = 2e9 + 1;
-const int limit = 1048576;
 
 using namespace std;
 
