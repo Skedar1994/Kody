@@ -4,11 +4,11 @@ potem Hasz hasz(string s)
 i pytajac hasz.haszuj(int pocz, int kon) dostajemy {s[kon]*P^0 + s[kon-1]*P^1 + ... + s[pocz]*P^(kon-pocz), s[kon]*Q^0...}
 indeksowanie od 0, haszowanie dwoma liczbami pierwszymi
 */
-vector < ll > P, Q;
 struct Hasz
 {
 	const static ll p = 263, q = 269, mod = 1e9+7;
 	vector < ll > Phasz, Qhasz; 
+	static vector < ll > P, Q;
 	static void init(int maxn)
 	{
 		P.resize(maxn+1), Q.resize(maxn+1);
@@ -40,3 +40,4 @@ struct Hasz
 		return make_pair(wynP, wynQ);
 	}
 };
+vector < ll > Hasz::P, Hasz::Q;
