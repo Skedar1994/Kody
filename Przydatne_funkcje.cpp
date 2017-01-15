@@ -10,6 +10,8 @@
 	vector < int > V = {1, 3, 2, 1};
 	sort(all(V));
 	V.resize( distance(V.begin(), unique(all(V))) );
+//sumy prefiksowe
+	partial_sum(V.begin(), V.end(), V.begin());//to ostatnie to wektor, w ktorym ma byc wynik
 
 //builtin, mozna na koncu nazwy funkcji dodaj ll jesli argumentum jest unsigned long long
 — Built-in Function: int __builtin_clz (unsigned int x)
