@@ -5,6 +5,7 @@ izomorfizm drzew
 gomory hu
 HLD nowe
 geometria
+dominator tree
 - szukanie przecięcia odcinków
 - punkty w wielokacie //http://codeforces.com/problemset/problem/166/B
 
