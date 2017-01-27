@@ -35,152 +35,96 @@ struct drz_prz
 	}
 };
 
-struct Sciezka
-{
-	vector < int > V;
-	drz_prz* drzewo;
-	void inicjuj()
-	{
-		drzewo = new drz_prz(V.size());
-	}
-	void dodaj_wierzch(int v)
-	{
-		V.pb(v);
-	}
-	void dodaj(int ind_pocz, int ind_kon, int war)
-	{
-		assert(ind_pocz == ind_kon); //bo dla != nie testowalem
-		drzewo->dodaj(ind_pocz, war);
-	}
-	int maxi(int pocz, int kon)
-	{
-		return drzewo->maxi(pocz, kon);
-	}
-};
+/*
+Jak mamy cos robic na krawedziach
+to myslimy, ze kazda krawedz jest przypisana do nizszego z wierzcholkow koncowch
 
-struct Info
-{
-	int nr_na_sciezce;
-	int nr_sciezki;
-	int roz_pod;//rozmiar poddrzewa
-	int ojciec;
-};
-
-
-//wierzcholki numerujemy od 1
+NUMER WIERZCHOLKA v W DRZEWIE PRZEDZIALOWYM TO num[v] !!!!!!!!!!!!!!!!!!
+* UWAZAC NA LONG LONGI
+*/
 struct HLD
 {
-	vector < vector < int > >& V;
-	vector < Sciezka > S;
-	vector < Info > I;
-	vector < int > Odw;//do dfs
-	HLD(vector < vector < int > >& V, int korzen) : V(V), I(V.size()), Odw(V.size(), 0)
+	vector < vector < int > > V;
+	int korzen, akt_num;
+	vector < int > num, wys, szczyt, wlp, ojc;//wielkosc poddrzewa
+	drz_prz drzewo;
+	HLD(int n, int korz, vector < vector < int > >& V_ini) : V(V_ini), korzen(korz), akt_num(1), num(n+1), wys(n+1), szczyt(n+1, 0), wlp(n+1, 0), ojc(n+1, 0), drzewo(n+1)
 	{
-		dfs_1(korzen, korzen);
-		dfs_2(korzen, -1);
-		for(auto& el : S)
-			el.inicjuj();
+		dfs(korz, 1, 1);
+		buduj(korz, korz);
 	}
-	int dfs_1(int v, int ojciec)
+	int dfs(int v, int h, int o)
 	{
-		if (Odw[v])
-			return 0;
-		Odw[v] = 1;
-		I[v].ojciec = ojciec;
-		int roz = 1;
+		wlp[v] = 1;
+		wys[v] = h;		
+		ojc[v] = o;
 		for(auto& el : V[v])
-			roz += dfs_1(el, v);
-		I[v].roz_pod = roz;
-		return roz;
+			if(el != o)
+				wlp[v] += dfs(el, h+1, v);
+		return wlp[v];
 	}
-	void dfs_2(int v, int sc)
+	void buduj(int v, int gora)
 	{
-		if (Odw[v] == 2)
-			return;
-		Odw[v] = 2;
-		if (sc == -1)
+		num[v] = akt_num++;
+		szczyt[v] = gora;
+		pair < int, int > ciezka(-1, -1);
+		for(auto el : V[v])
+			if(el != ojc[v])
+				ciezka = max(ciezka, {wlp[el], el});
+		if (ciezka.sd != -1)
+			buduj(ciezka.sd, gora);
+		for(auto el : V[v])
+			if(el != ojc[v] && el != ciezka.sd)
+				buduj(el, el);
+	}
+	int lca(int a, int b)
+	{
+		int sz_a = szczyt[a], sz_b = szczyt[b];
+		if (sz_a == sz_b)
+			return wys[a] < wys[b] ? a : b;
+		if (wys[sz_a] > wys[sz_b])
+			return lca(ojc[sz_a], b);
+		else
+			return lca(a, ojc[sz_b]);
+	}
+	vector < pair <int, int> > generuj_przedzialy(int dol, int gora)//gora to przodek szczytu
+	{
+		vector < pair < int, int> > Odp;
+		Odp.reserve(20);
+		while(szczyt[dol] != szczyt[gora])
 		{
-			sc = S.size();
-			S.resize(sc+1);
+			Odp.pb({num[szczyt[dol]], num[dol]});
+			dol = ojc[ szczyt[dol] ];
 		}
-		I[v].nr_sciezki = sc;
-		I[v].nr_na_sciezce = S[sc].V.size();
-		S[sc].dodaj_wierzch(v);
-		for(auto& el : V[v])
-		{
-			if (2 * I[el].roz_pod >= I[v].roz_pod)
-				dfs_2(el, sc);
-			else
-				dfs_2(el, -1);
-		}
+		Odp.pb({num[gora], num[dol]});
+		return Odp;
 	}
-	int maxi(int pocz, int kon)
+	void dodaj(int gdzie, int co)
 	{
-		int nr = I[pocz].nr_sciezki;
-		if (nr == I[kon].nr_sciezki)
-			return S[nr].maxi(I[kon].nr_na_sciezce, I[pocz].nr_na_sciezce);
-		int m1 = S[nr].maxi(0, I[pocz].nr_na_sciezce), m2 = maxi(I[S[nr].V[0]].ojciec, kon);
-		return max(m1, m2);
+		drzewo.dodaj(num[gdzie], co);
 	}
-	void dodaj(int pocz, int kon, int war)//UWAGA: kon to ma byc przodek pocz. Moze potrzebujesz LCA?
+	int zapyt(int a, int b)
 	{
-		int nr = I[pocz].nr_sciezki;
-		if (nr == I[kon].nr_sciezki)
-		{
-			S[nr].dodaj(I[kon].nr_na_sciezce, I[pocz].nr_na_sciezce, war);
-			return;
-		}
-		S[nr].dodaj(0, I[pocz].nr_na_sciezce, war) ;
-		dodaj(I[S[nr].V[0]].ojciec, kon, war);
-		
-	}
-};
-
-//wierzcholki numerujemy od 1
-struct LCA
-{
-	vector < vector < int > >&V;
-	vector < int > cz, pw, pom;
-	int n, k, czas, pot;
-	LCA(int n, int korzen, vector < vector < int > >&V) : n(n), k(korzen), V(V), cz(n+1), pw(n+1, 0), czas(0)
-	{
-		pot = 1;
-		while(pot < 2*n+2) pot *= 2;
-		pom.reserve(2*pot);
-		pom.resize(pot+1);
-		dfs(k);
-		for(int i = pot-1; i>0; i--)
-			pom[i] = min(pom[2*i], pom[2*i+1]);
-		
-	}
-	void dfs(int v)
-	{
-		int t = ++czas;
-		cz[t] = v;
-		pw[v] = pom.size();
-		pom.pb(czas);
-		for(int i=0; i<V[v].size(); i++)
-			if (!pw[ V[v][i] ])
-			{
-				dfs( V[v][i] );
-				pom.pb(t);
-			}
-	}
-	int znajdz(int v, int u)
-	{
-		v = pw[v];
-		u = pw[u];
-		if (v > u)
-			swap(v, u);
-		int mini = min(pom[v], pom[u]);
-		while(u - v > 1)
-		{
-			if (v%2 == 0)
-				mini = min(mini, pom[v+1]);
-			if (u%2 == 1)
-				mini = min(mini, pom[u-1]);
-			u/=2; v/=2;
-		}
-		return cz[mini];
+		int pom = lca(a, b), wyn = -IINF;
+		auto V1 = generuj_przedzialy(a, pom), V2 = generuj_przedzialy(b, pom);
+/*
+Ten fragment trzeba odkomentowac, jesli nie chcemy liczyc dwa razy wierzchlka bedacego lca zapytania (np. gdy liczymy sume)
+		if (V1.back().ft == V1.back().sd)
+			V1.pop_back();
+		else
+			V1.back().ft++;
+*/ 
+/*
+A jesli nie interesuje nas wcale wierzcholek bedacy LCA, to trzeba odkomentowac oba
+		if (V2.back().ft == V2.back().sd)
+			V2.pop_back();
+		else
+			V2.back().ft++;
+*/ 
+		for(auto& el : V1)
+			wyn = max(wyn, drzewo.maxi(el.ft, el.sd));
+		for(auto& el : V2)
+			wyn = max(wyn, drzewo.maxi(el.ft, el.sd));
+		return wyn;
 	}
 };
