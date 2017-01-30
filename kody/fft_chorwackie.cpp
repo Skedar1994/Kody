@@ -52,6 +52,7 @@ namespace FFT {
 }
 
 #define MAX (1<<19)
+//dziala jakos wolno?
 void mult_mod(ll *a, ll *b, ll *c, int len, int mod) {
 	static ll a0[MAX], a1[MAX];
 	static ll b0[MAX], b1[MAX];
