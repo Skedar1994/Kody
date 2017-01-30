@@ -12,7 +12,7 @@ struct drz_prz
 	void dodaj(int gdzie, int war)
 	{
 		gdzie += pot;
-		V[gdzie] += war;
+		V[gdzie] = war;
 		while(gdzie > 1)
 		{
 			gdzie /= 2;
@@ -34,11 +34,11 @@ struct drz_prz
 		return wyn;
 	}
 };
-
+ 
 /*
 Jak mamy cos robic na krawedziach
 to myslimy, ze kazda krawedz jest przypisana do nizszego z wierzcholkow koncowch
-
+ 
 NUMER WIERZCHOLKA v W DRZEWIE PRZEDZIALOWYM TO num[v] !!!!!!!!!!!!!!!!!!
 * UWAZAC NA LONG LONGI
 */
@@ -87,7 +87,9 @@ struct HLD
 		else
 			return lca(a, ojc[sz_b]);
 	}
-	vector < pair <int, int> > generuj_przedzialy(int dol, int gora)//gora to przodek szczytu
+	/* Gora to przodek szczytu
+	 * z_gora mowi, czy gora ma byc wliczona do przedzialow */
+	vector < pair <int, int> > generuj_przedzialy(int dol, int gora, bool z_gora)
 	{
 		vector < pair < int, int> > Odp;
 		Odp.reserve(20);
@@ -97,6 +99,13 @@ struct HLD
 			dol = ojc[ szczyt[dol] ];
 		}
 		Odp.pb({num[gora], num[dol]});
+		if (!z_gora)
+		{
+			if (Odp.back().ft == Odp.back().sd)
+				Odp.pop_back();
+			else
+				Odp.back().ft++;
+		}
 		return Odp;
 	}
 	void dodaj(int gdzie, int co)
@@ -105,22 +114,9 @@ struct HLD
 	}
 	int zapyt(int a, int b)
 	{
-		int pom = lca(a, b), wyn = -IINF;
-		auto V1 = generuj_przedzialy(a, pom), V2 = generuj_przedzialy(b, pom);
-/*
-Ten fragment trzeba odkomentowac, jesli nie chcemy liczyc dwa razy wierzchlka bedacego lca zapytania (np. gdy liczymy sume)
-		if (V1.back().ft == V1.back().sd)
-			V1.pop_back();
-		else
-			V1.back().ft++;
-*/ 
-/*
-A jesli nie interesuje nas wcale wierzcholek bedacy LCA, to trzeba odkomentowac oba
-		if (V2.back().ft == V2.back().sd)
-			V2.pop_back();
-		else
-			V2.back().ft++;
-*/ 
+		int pom = lca(a, b);
+		auto V1 = generuj_przedzialy(a, pom, 1), V2 = generuj_przedzialy(b, pom, 1);
+		int wyn = -IINF;
 		for(auto& el : V1)
 			wyn = max(wyn, drzewo.maxi(el.ft, el.sd));
 		for(auto& el : V2)
