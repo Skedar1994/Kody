@@ -2,6 +2,7 @@
 using namespace std;
 
 //http://www.cs.helsinki.fi/u/tpkarkka/publications/jacm05-revised.pdf
+//NIE DZIALA DLA 1
 
 const int N = 210000;
 
