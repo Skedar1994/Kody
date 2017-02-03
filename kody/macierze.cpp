@@ -34,8 +34,10 @@ struct Macierz{
         for(int i=0; i<h; i++){
             for(int j=0; j<w; j++){
                 for(int k=0; k<a; k++)
+                {
                     wynik[i][j] += V[i][k] * m.V[k][j];
                     wynik[i][j] %= MOD;
+                }
             }
         }
         return wynik;
