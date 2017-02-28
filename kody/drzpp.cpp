@@ -1,3 +1,4 @@
+//iteracyjne dodaj na przedziale, suma/maks na przedziale
 struct wezel
 {
 	ll war;//tylko dla maks
@@ -78,4 +79,72 @@ struct drzewoprzedzialowe //max->min wystarczy zrobic define max min
 		}
 		return suma;
 	}
+};
+//------------------------------------------------------------------------------------
+//rekurencyjne ustaw na przedziale, suma na przedziale
+struct Wezel
+{
+	int l;
+	int p;
+	int suma;
+	int ust;
+};
+
+struct drzewo_przed
+{
+	int pot;
+	vector < Wezel > V;
+	drzewo_przed(int n)
+	{
+		pot = 1;
+		while(pot <= n)
+			pot <<= 1;
+		V.resize(2*pot, Wezel{0, 0, 0, -1});
+		V[1].l = 1, V[1].p = pot;
+		for(int i=1; i<pot; i++)
+		{
+			int s = (V[i].l+V[i].p)/2;
+			V[2*i].l = V[i].l, V[2*i].p = s;
+			V[2*i+1].l = s+1, V[2*i+1].p = V[i].p;
+		}	
+	}
+	void propaguj(int nr)
+	{
+		if (V[nr].ust == -1)
+			return;
+		V[2*nr].ust = V[2*nr+1].ust = V[nr].ust;
+		V[2*nr].suma = V[2*nr+1].suma = V[nr].suma/2;
+		V[nr].ust = -1;
+	}
+	void ustaw(int pocz, int kon, int co, int nr = 1)
+	{
+		int l = V[nr].l, p = V[nr].p;
+		int s = (p + l)/2;
+		if (pocz == l && kon == p)
+		{
+			V[nr].ust = co;
+			V[nr].suma = co * (p + 1 - l);
+			return;
+		}
+		propaguj(nr);
+		if (pocz <= s)
+			ustaw(pocz, min(s, kon), co, 2*nr);
+		if (kon >= s+1)
+			ustaw(max(s+1, pocz), kon, co, 2*nr+1);
+		V[nr].suma = V[nr*2].suma + V[nr*2+1].suma;
+	}
+	int suma(int pocz, int kon, int nr = 1)
+	{
+		int l = V[nr].l, p = V[nr].p;
+		int s = (p + l)/2;
+		if (pocz == l && kon == p)
+			return V[nr].suma;
+		propaguj(nr);
+		int wyn = 0;
+		if (pocz <= s)
+			wyn += suma(pocz, min(s, kon), 2*nr);
+		if (kon >= s+1)
+			wyn += suma(max(s+1, pocz), kon, 2*nr+1);
+		return wyn;
+	}	
 };
