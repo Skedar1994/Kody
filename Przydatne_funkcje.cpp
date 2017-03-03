@@ -81,3 +81,20 @@ cout.setf( ios::dec, ios::basefield );
 cout << l << endl; //59
 
 */
+
+// Funkcja haszująca do własnej struktury.
+
+struct my_struct {
+	int a;
+	bool operator== (const my_struct& oth) const {
+		return a == oth.a;
+	}
+};
+
+struct my_hasher {
+	size_t operator()(const my_struct& k) const {
+		return k.a + 7;
+	}
+};
+
+unordered_map<my_struct, int, my_hasher> mapa;
