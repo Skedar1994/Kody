@@ -98,7 +98,7 @@ struct DWASAT
 			if (!Wss[kol[i]])
 			{
 				Wss[kol[i]] = 1;
-				for(auto& el : sss->SS[i])
+				for(auto& el : sss->SS[kol[i]])
 				{
 					Wel[el] = 1;
 					int zaprz = Para[el];
