@@ -10,8 +10,6 @@
 //Matching m(..); m.matching() znajduje wynik 
 //mozna dodac! m.mpn() i to zwraca maksymalny podzbior niezalezny
 
-//mpn musze przetestowac dzis o 19.00 (12.03.17)
-
 struct Matching
 {
 	int n, wynik;
