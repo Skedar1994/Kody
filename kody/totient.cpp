@@ -23,10 +23,10 @@ To ponizej sluzy do liczenia sum phi(1) * 1^k + phi(2) * 2^k + .. + phi(n) * n^k
 w zlozonisci O(k*n^(2/3)) (być może z logiem z mapy jeszcze)
 Jak sam totient function chcemy to nie przepisujemy tego ponizej
 UWAGI: 
-ustaw MAX na 10^6
+ustaw MAX na 10^6 (to jest 1e9 ^ (2/3), można ustawić max na mniej jeśli wejście jest mniejsze od 10^9)
 zeby policzyc sumę dla danego k to funkcja Suma_poteg musi miec rozpisane case'y do k+1
 */
-const ll MOD = 1e9+7;
+const ll MOD = 1e9+7;//jak to zmienimy to ponizej musimy tez odrotnosci
 struct Tot_pref_sum
 {
 	int pot;
