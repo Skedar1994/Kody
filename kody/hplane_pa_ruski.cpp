@@ -63,7 +63,7 @@ namespace hplane{
     bool empty_is(const line& l1, const line& l2) { return det(l1.nl, l2.nl) == 0 and dot(l1.nl, l2.nl) < 0 and l1.c + eps > -l2.c;}
     
     bool wrong(const line& l_prev, const line& l_last, const line& l_new) { 
-        if(!eq(det(l_last.nl, l_new.nl), 0)) {
+        if(det(l_last.nl, l_new.nl) != 0) {
             return l_last.tis(l_new) < l_last.tis(l_prev) + eps;
         } else {
             return false;
