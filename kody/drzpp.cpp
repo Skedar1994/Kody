@@ -81,70 +81,94 @@ struct drzewoprzedzialowe //max->min wystarczy zrobic define max min
 	}
 };
 //------------------------------------------------------------------------------------
-//rekurencyjne ustaw na przedziale, suma na przedziale
-struct Wezel
+//łatwiejze do przerobienia, ciut wolniejsze
+struct Wezel	//prop jest juz wliczone do sumy i maks dla wezla
 {
-	int l;
-	int p;
-	int suma;
-	int ust;
+	int l, p; 
+	ll suma, maks, prop;
+	void ustaw(int a, int b){l = a, p = b;}
 };
 
-struct drzewo_przed
+struct Drzewo_przedzialowe
 {
+	Wezel* tab;
 	int pot;
-	vector < Wezel > V;
-	drzewo_przed(int n)
+	Drzewo_przedzialowe(int n)
 	{
-		pot = 1;
-		while(pot <= n)
-			pot <<= 1;
-		V.resize(2*pot, Wezel{0, 0, 0, -1});
-		V[1].l = 1, V[1].p = pot;
+		n++;
+		pot = (1 << (32-__builtin_clz(n) ));
+		DBG(pot);
+		tab = new Wezel[2*pot];
+		memset(tab, 0, 2*pot*sizeof(Wezel));
+		tab[1].ustaw(0, pot-1);
+		tab[1].p = pot-1;
 		for(int i=1; i<pot; i++)
 		{
-			int s = (V[i].l+V[i].p)/2;
-			V[2*i].l = V[i].l, V[2*i].p = s;
-			V[2*i+1].l = s+1, V[2*i+1].p = V[i].p;
-		}	
+			int s = (tab[i].l + tab[i].p)/2;
+			tab[2*i].ustaw(tab[i].l, s);
+			tab[2*i+1].ustaw(s+1, tab[i].p);
+		}
 	}
+	void aktualizuj(int nr)/////////////to napisac tak jak potrzebujemy
+	{
+		tab[nr].maks = tab[nr].prop;
+		tab[nr].suma = (tab[nr].p - tab[nr].l + 1ll) * tab[nr].prop;
+		if (nr < pot)
+		{
+			tab[nr].maks += max(tab[2*nr].maks, tab[2*nr+1].maks);
+			tab[nr].suma += tab[2*nr].suma + tab[2*nr+1].suma;
+		}
+	}
+	//////// przykladowe zapytania
+	ll suma(int l, int p, int nr=1)
+	{
+		if (l > tab[nr].p || p < tab[nr].l)
+			return 0;
+		if (l <= tab[nr].l && p >= tab[nr].p)
+			return tab[nr].suma;
+		else
+			return suma(l, p, 2*nr)
+				   + suma(l, p, 2*nr+1)
+				   + (1ll + min(p, tab[nr].p) - max(l, tab[nr].l) ) * tab[nr].prop;
+	}
+	ll maks(int l, int p, int nr=1)
+	{
+		if (l > tab[nr].p || p < tab[nr].l)
+			return -INF;
+		if (l <= tab[nr].l && p >= tab[nr].p)
+			return tab[nr].maks;
+		else
+			return max(maks(l, p, 2*nr), maks(l, p, 2*nr+1)) + tab[nr].prop;
+	}
+	///////////////
 	void propaguj(int nr)
 	{
-		if (V[nr].ust == -1)
+		if (!tab[nr].prop)
 			return;
-		V[2*nr].ust = V[2*nr+1].ust = V[nr].ust;
-		V[2*nr].suma = V[2*nr+1].suma = V[nr].suma/2;
-		V[nr].ust = -1;
-	}
-	void ustaw(int pocz, int kon, int co, int nr = 1)
-	{
-		int l = V[nr].l, p = V[nr].p;
-		int s = (p + l)/2;
-		if (pocz == l && kon == p)
+		tab[2*nr].prop += tab[nr].prop;
+		tab[2*nr+1].prop += tab[nr].prop;
+		tab[nr].prop = 0;
+		if (nr < pot)
 		{
-			V[nr].ust = co;
-			V[nr].suma = co * (p + 1 - l);
-			return;
+			aktualizuj(2*nr);
+			aktualizuj(2*nr+1);
 		}
-		propaguj(nr);
-		if (pocz <= s)
-			ustaw(pocz, min(s, kon), co, 2*nr);
-		if (kon >= s+1)
-			ustaw(max(s+1, pocz), kon, co, 2*nr+1);
-		V[nr].suma = V[nr*2].suma + V[nr*2+1].suma;
+		aktualizuj(nr);
 	}
-	int suma(int pocz, int kon, int nr = 1)
+	void dodaj(ll co, int l, int p, int nr = 1)
 	{
-		int l = V[nr].l, p = V[nr].p;
-		int s = (p + l)/2;
-		if (pocz == l && kon == p)
-			return V[nr].suma;
-		propaguj(nr);
-		int wyn = 0;
-		if (pocz <= s)
-			wyn += suma(pocz, min(s, kon), 2*nr);
-		if (kon >= s+1)
-			wyn += suma(max(s+1, pocz), kon, 2*nr+1);
-		return wyn;
+		if (l > tab[nr].p || p < tab[nr].l)
+			return;
+		if (l <= tab[nr].l && p >= tab[nr].p)
+		{
+			tab[nr].prop += co;
+			aktualizuj(nr);
+		}
+		else
+		{
+			dodaj(co, l, p, 2*nr);
+			dodaj(co, l, p, 2*nr+1);
+			aktualizuj(nr);
+		}
 	}	
 };
