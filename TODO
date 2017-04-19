@@ -4,14 +4,16 @@ izomorfizm drzew
 gomory hu
 pierwiastki wielomianu
 dominator tree
-drzewo palindromiczne
 tablica sufiksowa krotka w n log^2?
-treap krotki 
 DirectedMST?
 gauss?
 geometria
 - geo 3d
 - szukanie przecięcia odcinków
 - punkty w wielokacie //http://codeforces.com/problemset/problem/166/B
+
+Do przetestowania:
+treap
+drzewo palindromiczne
 
 -Weffc++ - uzywac? -Wformat -Wfloat-equal
