@@ -98,3 +98,7 @@ struct my_hasher {
 };
 
 unordered_map<my_struct, int, my_hasher> mapa;
+
+__int128_t
+__int128
+int128_t
