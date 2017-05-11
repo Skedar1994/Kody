@@ -1,4 +1,4 @@
-bitset<MAXN> pakuj(const vector < pair <int, int> >& V)
+bitset<MAXN> pakuj(const vector < pair <int, int> >& V)//rozmiar, krotnosc (krotnosc ma byc rozna od 0)
 {
 	bitset<MAXN> B = 1;
 	map < int, int > M;
