@@ -67,7 +67,7 @@ Instrukcja uzycia:
 DWASAT dwasat(n);
 klauzule xi v ~xj dodajemy : dwasat.dodaj(i, i+n)
 na koniec odbalamy dwasat.rob
-wartosc i-tej zmiennej to dwasat.Wel[i]
+wartosc i-tej zmiennej to dwasat.Wel[i] (prawda to 1, falsz to -1)
 */
 
 struct DWASAT
