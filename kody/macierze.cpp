@@ -62,3 +62,48 @@ Macierz poteguj(Macierz m, ll wyk)
         wynik = wynik * m;
     return wynik;
 }
+
+//to traktuje jakby kazda macierz byla 51x51. Transpozycja pewnie tez dziala
+#define MAXBOK 51
+struct Macierz{
+    long long MOD;
+    int V[MAXBOK][MAXBOK];
+    Macierz() = default;
+    Macierz(ll mod, ll wiersze, ll kolumny, ll na_przekatnej = 1) : MOD(mod)
+    {
+		for(int i=0; i<MAXBOK; i++)
+			for(int j=0; j<MAXBOK; j++)
+				V[i][j] = 0;
+        for(int i=0; i<min(wiersze, kolumny); i++)
+            V[i][i] = na_przekatnej;
+    }
+    int* operator[](const int& ind)
+    {
+        return V[ind];
+    }
+    Macierz operator*(Macierz& m)
+    {
+        int h = MAXBOK, w = MAXBOK, a = MAXBOK;
+        Macierz wynik(MOD, MAXBOK, MAXBOK, 0);
+        for(int i=0; i<h; i++){
+            for(int j=0; j<w; j++){
+                for(int k=0; k<a; k++)
+                {
+                    wynik[i][j] += V[i][k] * m.V[k][j];
+                }
+
+                wynik[i][j] %= MOD;
+            }
+        }
+        return wynik;
+    }
+    /*
+    Macierz transpozycja()
+    {
+        Macierz m(MOD, SZ(V[0]), SZ(V));
+        for(int i=0; i<SZ(V); i++)
+            for(int j=0; j<SZ(V[0]); j++)
+                m[j][i] = V[i][j];
+        return m;
+    }*/
+};
