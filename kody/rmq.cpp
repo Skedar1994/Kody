@@ -4,7 +4,7 @@
 
 const int MAXN=110000, MAXLOGN=20;
 
-int A[MAXNN];
+int A[MAXN];
 int M[MAXN][MAXLOGN];
 int n,l,r;
 
