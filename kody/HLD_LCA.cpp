@@ -6,8 +6,8 @@ struct drz_prz
 	{
 		pot = 2;
 		while(pot < n)
-			pot *= 2;
-		V.resize(2*pot, 0);
+			pot <<= 1;
+		V.resize(pot << 1, 0);
 	}
 	void dodaj(int gdzie, int war)
 	{
@@ -15,8 +15,8 @@ struct drz_prz
 		V[gdzie] = war;
 		while(gdzie > 1)
 		{
-			gdzie /= 2;
-			V[gdzie] = max(V[gdzie*2], V[gdzie*2+1]);
+			gdzie >>= 1;
+			V[gdzie] = max(V[gdzie << 1], V[(gdzie << 1) + 1]);
 		}
 	}
 	int maxi(int pocz, int kon)
@@ -25,11 +25,11 @@ struct drz_prz
 		int wyn = max(V[pocz], V[kon]);
 		while(kon - pocz > 1)
 		{
-			if (pocz%2 == 0)
+			if ((pocz & 1) == 0)
 				wyn = max(wyn, V[pocz+1]);
-			if (kon%2 == 1)
+			if ((kon & 1) == 1)
 				wyn = max(wyn, V[kon-1]);
-			pocz/=2; kon/=2;
+			pocz >>= 1; kon >>= 1;
 		}
 		return wyn;
 	}
@@ -38,7 +38,7 @@ struct drz_prz
 /*
 Jak mamy cos robic na krawedziach
 to myslimy, ze kazda krawedz jest przypisana do nizszego z wierzcholkow koncowch
- 
+czyli tego ktory ma wys wieksze (xD), jak wywolujemy generuj_przedzialy w zapyt, to z_gora musi byc wtedy ustawione na 0
 NUMER WIERZCHOLKA v W DRZEWIE PRZEDZIALOWYM TO num[v] !!!!!!!!!!!!!!!!!!
 * UWAZAC NA LONG LONGI
 */
