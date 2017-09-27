@@ -18,7 +18,6 @@ template<class TH, class... TA> void _dbg(const char *sdbg, TH h, TA... a) {
   while(*sdbg!=',')cerr<<*sdbg++;cerr<<'='<<h<<','; _dbg(sdbg+1, a...);
 }
 
-#define LOCAL
 #ifdef LOCAL
 #define DBG(...) _dbg(#__VA_ARGS__, __VA_ARGS__)
 #else
