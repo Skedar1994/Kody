@@ -8,7 +8,7 @@ struct node {
 	pair < T, T > mini;
 	int lazy;
 	int prior, size;
-	node *l, *r;
+	node *l, *r, *p;//p to parent, parent roota nie jest nullem
 	node():mini(0, 0){}
 };
 node _arr[2 * N];
@@ -36,13 +36,20 @@ struct implicit_treap {
 		else swap(t->l, t->r);
 		t->lazy = 0;
 		t->mini.sd = size(t) - t->mini.sd - 1;//hax jak chcemy miec indeks minimum
+		if (t->l)
+			t->l->p = t;
+		if (t->r)
+			t->r->p = t;
 	}
 	void combine(node * &t, node * l, node * r) { //dzieci policzone -> policzmy co u nas 
 		if (!t) return;
 		t->mini = {t->val, size(l)};
 		if (l && l->mini.ft <= t->mini.ft) t->mini = l->mini;
 		if (r && r->mini.ft < t->mini.ft) {t->mini = r->mini; t->mini.sd += 1 + size(l);}
-		
+		if (l)
+			l->p = t;
+		if (r)
+			r->p = t;
 	}
 	void operation(node * t) { //operation of segtree tu nie ruszac
 		if (!t)return;
@@ -95,10 +102,34 @@ struct implicit_treap {
 	}
 	node* add(T val)
 	{
+		node* nn = init(val);
 		node * temp;
-		merge(temp, root, init(val));
+		merge(temp, root, nn);
 		root = temp;
-		return root;
+		return nn;
+	}
+	void lazy_rec(node* t)
+	{
+		if (t != root)
+			lazy_rec(t->p);
+		lazy(t);
+	}
+	//tylko gdy potrzebujemy indeksu node* a
+	int get_index(node* t)
+	{
+		lazy_rec(t);
+		int res = 1;
+		if (t->l)
+			res += size(t->l);
+		auto p = t->p;
+		while(t != root)
+		{
+			if (p->r == t)
+				res += size(p->l) + 1;
+			t = p;
+			p = t->p;
+		}
+		return res-1;
 	}
 };
 #undef T
