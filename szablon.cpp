@@ -8,8 +8,8 @@
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double ld;
-const long long INF = 4e18L + 1;
-const int IINF = 2e9 + 1;
+const long long INF = 1e18L + 1;
+const int IINF = 1e9 + 1;
 
 using namespace std;
 
@@ -19,7 +19,6 @@ template<class TH, class... TA> void _dbg(const char *sdbg, TH h, TA... a) {
 }
 
 #ifdef LOCAL
-//#undef LOCAL
 #define DBG(...) _dbg(#__VA_ARGS__, __VA_ARGS__)
 #else
 #define DBG(...) (__VA_ARGS__)
@@ -32,5 +31,7 @@ int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 #endif
+  
+  
     return 0;
 }
