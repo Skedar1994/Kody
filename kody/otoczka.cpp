@@ -25,8 +25,10 @@ struct Convex_Hull{
 	vector<C> odp;
 	void dodaj(C& c) { pkty.pb(c); }
 	void policz() {
+		/*odkomentować jeśli chcemy mieć wspóliniowe pkty na otoczce, a są duplikaty w wejściu
 		sort(all(pkty), [&](auto& c1, auto& c2){ return make_pair(c1.x, c1.y) < make_pair(c2.x, c2.y);});
 		pkty.resize(unique(all(pkty)) - pkty.begin());
+		*/
 		start = pkty[0];
 		int ind = 0;
 		for(int i = 1; i < SZ(pkty); i++){
