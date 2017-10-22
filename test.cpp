@@ -6,7 +6,8 @@ int main(int argc, char* argv[])
 	
 	for(int i=1; i!=test_num; i++)
 	{
-		sprintf(b, "./gen_%s > %s.in", p, p);
+		DBG(i);
+		sprintf(b, "./gen_%s %d > %s.in", p, i, p);
 		system(b);
 		sprintf(b, "./%s < %s.in >%s.out", p, p, p);
 		system(b);
@@ -19,4 +20,6 @@ int main(int argc, char* argv[])
 			break;
 		}
 	}
+	
+	return 0;
 }
