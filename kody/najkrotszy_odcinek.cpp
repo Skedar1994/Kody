@@ -8,11 +8,11 @@ typedef complex<R> C;
 #define ILE 10
 
 struct sortx {
-  bool operator() (const C& A, const C& B) const {return A.x<B.x;}
+  bool operator() (const C& A, const C& B) const {return make_pair(A.x, A.y) < make_pair(B.x, B.y);}
 };
 
 struct sorty {
-  bool operator() (const C& A, const C& B) const {return A.y<B.y;}
+  bool operator() (const C& A, const C& B) const {return make_pair(A.y, A.x) < make_pair(B.y, B.x);}
 };
 
 
