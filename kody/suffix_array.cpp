@@ -126,10 +126,11 @@ int main(){
 struct SuffixArray {
   const int L;
   string s;
+  vector<int>res;
   vector<vector<int> > P;
   vector<pair<pair<int,int>,int> > M;
-  
- SuffixArray(const string &_s) : L(_s.length()), s(_s), P(1, vector<int>(L, 0)), M(L) {
+
+  SuffixArray(const string &_s) : L(_s.length()), s(_s), res(L), P(1, vector<int>(L, 0)), M(L) {
     for (int i = 0; i < L; i++) P[0][i] = int(s[i]);
     for (int skip = 1, level = 1; skip < L; skip *= 2, level++) {
       P.push_back(vector<int>(L, 0));
@@ -139,10 +140,10 @@ struct SuffixArray {
       for (int i = 0; i < L; i++) 
 	P[level][M[i].second] = (i > 0 && M[i].first == M[i-1].first) ? P[level][M[i-1].second] : i;
     }
-    for(int i=0; i<L; i++) P.back()[i] = M[i].sd;    
+    for(int i=0; i<L; i++) res[i] = M[i].sd;    
   }
 
-  vector<int> GetSuffixArray() { return P.back(); }
+  vector<int> GetSuffixArray() { return res; }
 
   // returns the length of the longest common prefix of s[i...L-1] and s[j...L-1]
   int LongestCommonPrefix(int i, int j) {
