@@ -1,18 +1,18 @@
 struct LCA
 {
 	int n, k, czas, pot;
-	vector < vector < int > >&V;
+	vector < vector < int > >& V;
 	vector < int > cz, pw, pom;
-	LCA(int n, int korzen, vector < vector < int > >&V) : n(n), k(korzen), czas(0), V(V), cz(n+1), pw(n+1, 0)
+	LCA(int _n, int korzen, vector < vector < int > >& _V) : n(_n), k(korzen), czas(0), V(_V), cz(n+1), pw(n+1, 0)
 	{
 		pot = 1;
 		while(pot < 2*n+2) pot *= 2;
 		pom.reserve(2*pot);
 		pom.resize(pot+1);
 		dfs(k);
-		for(int i = pot-1; i>0; i--)
+		pom.resize(2*pot, IINF);
+		for(int i=pot-1; i>0; i--)
 			pom[i] = min(pom[2*i], pom[2*i+1]);
-		
 	}
 	void dfs(int v)
 	{
@@ -38,7 +38,7 @@ struct LCA
 		{
 			if (v%2 == 0)
 				mini = min(mini, pom[v+1]);
-			if (u%2 == 1)
+			if (u%2==1)
 				mini = min(mini, pom[u-1]);
 			u/=2; v/=2;
 		}
