@@ -54,7 +54,7 @@ struct Bignum
         }
         while(V.back() >= baza)
         {
-            int ile = V.back() / baza;
+            ll ile = V.back() / baza;
             V.back() %= baza;
             V.pb(ile);
         }
