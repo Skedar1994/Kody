@@ -14,6 +14,15 @@ bool eq(C c1, C c2) { return eq(c1.x, c2.x) and eq(c1.y, c2.y); }
 R dot(C c1, C c2) { return c1.x * c2.x + c1.y * c2.y;}
 R det(C c1, C c2) { return c1.x * c2.y - c1.y * c2.x;}
 
+bool an_cmp(const C& c1, const C& c2){
+        bool b1 = (c1.x > 0) || (c1.x == 0 && c1.y > 0);
+        bool b2 = (c2.x > 0) || (c2.x == 0 && c2.y > 0);
+        if (b1 == b2)
+            return det(c1, c2) > 0;
+        else
+            return b1>b2;
+}
+
 struct line{
 	C n;
 	R c;
