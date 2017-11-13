@@ -87,10 +87,11 @@ struct LPSolver {
   }
 };
 /*
-Przykladowe stworzenie vectorow:
-VVD A(n*n, VD(2*n, 0.0));
-VD C(2*n, -1.0);
-VD B(n*n, 0.0);
+Przykladowe uzycie:
+VVD A(n, VD(m, 0.0));
+VD C(m, -1.0);
+VD B(n, 0.0);
+uzupelnienie A, B, C
 LPSolver lps(A, B, C);
 VD vec;
 ld res = lps.Solve(vec);
