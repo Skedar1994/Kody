@@ -87,6 +87,7 @@ struct LPSolver {
   }
 };
 /*
+Przykladowe stworzenie vectorow:
 VVD A(n*n, VD(2*n, 0.0));
 VD C(2*n, -1.0);
 VD B(n*n, 0.0);
