@@ -112,7 +112,7 @@ ll sito[mala+1];
 
 vector < pair <ull,int> > rozloz(ll M)
 {
-	vector < ll > V = {M};
+	vector < ll > V(1, M);
 	vector < pair < ull, int > > Odp;
 	while(V.size())
 	{
@@ -159,7 +159,7 @@ void sito_eratostenesa()//uzyc na poczatku maina
 //dostaje rozklad na czynniki pierwsze, zwraca vector ze wszystkimi dzielnikami
 vector < ull > znajdz_dzielniki(vector < pair < ull, int > >& V)
 {
-	vector < ull > odp{1};
+	vector < ull > odp(1, 1);
 	for(auto& p : V)
 	{
 		int sz = SZ(odp);
