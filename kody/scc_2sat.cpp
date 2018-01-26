@@ -10,7 +10,7 @@ struct SSS
 	vector < vector < int > >& V, W, SS, GSS;
 	vector < int > odw, kol, ss_ind;
 	int nr;
-	SSS(int n, vector < vector < int > >& V) : V(V), W(V.size()), odw(n), kol(n), ss_ind(n, -1), nr(0) 
+	SSS(int n, vector < vector < int > >& _V) : V(_V), W(V.size()), odw(n), kol(n), ss_ind(n, -1), nr(0) 
 	{
 		for(int i=0; i<n; i++)
 			for(auto el : V[i])
