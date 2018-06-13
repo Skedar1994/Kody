@@ -76,3 +76,19 @@ void mult_mod(ll *a, ll *b, ll *c, int len, int mod) {
 	rep(i, 0, 2*len) c2[i] %= mod;
 	rep(i, 0, 2*len) c[i] = (c0[i] + (c1[i] << 16) + (c2[i] << 32)) % mod;
 }
+
+//or convolution:
+void tra(int *from, int *to, bool rev) 
+{ 
+    if(to - from == 1) 
+        return; 
+    int *mid = from + (to - from) / 2; 
+    tra(from, mid, rev); 
+    tra(mid, to, rev); 
+    for(int i = 0; i < mid - from; i++) 
+    {
+		int mnoz = 1;
+		if (rev) mnoz = -1;
+        *(mid + i) += mnoz * (*(from + i)); 
+	}
+}
