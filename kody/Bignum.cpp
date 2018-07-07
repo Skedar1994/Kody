@@ -1,7 +1,7 @@
-//dl to logarytm 10 z baza
-struct Bignum
+struct Bignum //tylko na dodatnich, mnozenie wolne
 {
-    ll baza = 1000000000000000LL, dl = 15;
+    static const ll baza = 10LL, dl = 1;
+//    ll baza = 1000000000000000LL, dl = 15;
     vector < ll > V;
     Bignum(ll x)
     {
@@ -84,11 +84,47 @@ struct Bignum
         popraw();
         return *this;
     }
+    Bignum& operator-=(const Bignum& b)
+    {
+    	assert(! ( (*this) < b ));
+        if (SZ(V) <= SZ(b.V))
+            V.resize(SZ(b.V));
+        for(int i=0; i<SZ(b.V); i++)
+            V[i] -= b.V[i];
+        for(int i=0; i+1<SZ(V); i++)
+        	if (V[i]< 0)
+        	{
+        		V[i] += baza;
+        		V[i+1]--;
+        	}
+        popraw();
+        return *this;
+    }
     Bignum operator+(const Bignum& b)
     {
         Bignum res;
         res = (*this);
         res += b;
+        return res;
+    }
+    Bignum operator-(const Bignum& b)
+    {
+        Bignum res;
+        res = (*this);
+        res -= b;
+        return res;
+    }
+    Bignum operator*(const Bignum& b)
+    {
+    	int s1 = SZ(b.V);
+    	int s2 = SZ(V);
+    	vector < ll > resV(s1+s2, 0);
+    	for(int i=0; i<s1; i++)
+    		for(int j=0; j<s2;j++)
+    			resV[i+j] += V[j] * b.V[i];
+        Bignum res;
+        res.V = resV;
+        res.popraw();
         return res;
     }
     void wypisz()
@@ -105,6 +141,7 @@ struct Bignum
                 s = "0" + s;
             cout << s;
         }
+        cout<<"\n";
         //cout << endl;
     }
 };
